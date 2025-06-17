@@ -26,7 +26,7 @@ static void lg3p92_panel_reset(struct lg3p92_panel *ctx)
 {
     // TODO
 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-	msleep(20);
+	msleep(25);
 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
 	msleep(25);
 }
@@ -131,6 +131,59 @@ static const struct drm_panel_funcs lg3p92_panel_funcs = {
 	.get_modes = lg3p92_panel_get_modes,
 };
 
+static int lg3p92_panel_bl_update_status(struct backlight_device *bl)
+{
+	struct mipi_dsi_device *dsi = bl_get_data(bl);
+	u16 brightness = backlight_get_brightness(bl);
+	int ret;
+
+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+
+	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
+	if (ret < 0)
+		return ret;
+
+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+
+	return 0;
+}
+
+static int lg3p92_panel_bl_get_brightness(struct backlight_device *bl)
+{
+	struct mipi_dsi_device *dsi = bl_get_data(bl);
+	u16 brightness = bl->props.brightness;
+	int ret;
+
+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+
+	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
+	if (ret < 0)
+		return ret;
+
+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+
+	return brightness & 0xff;
+}
+
+static const struct backlight_ops lg3p92_panel_bl_ops = {
+	.update_status = lg3p92_panel_bl_update_status,
+	.get_brightness = lg3p92_panel_bl_get_brightness,
+};
+
+static struct backlight_device *
+lg3p92_panel_create_backlight(struct mipi_dsi_device *dsi)
+{
+	struct device *dev = &dsi->dev;
+	const struct backlight_properties props = {
+		.type = BACKLIGHT_RAW,
+		.brightness = 255,
+		.max_brightness = 255,
+	};
+
+	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
+					      &lg3p92_panel_bl_ops, &props);
+}
+
 static int lg3p92_panel_probe(struct mipi_dsi_device *dsi)
 {
 	struct device *dev = &dsi->dev;
@@ -154,6 +207,14 @@ static int lg3p92_panel_probe(struct mipi_dsi_device *dsi)
 	                  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET;
 
 	drm_panel_init(&ctx->panel, dev, &lg3p92_panel_funcs, DRM_MODE_CONNECTOR_DSI);
+
+	ctx->panel.backlight = lg3p92_panel_create_backlight(dsi);
+	if (IS_ERR(ctx->panel.backlight)) {
+		ret = PTR_ERR(ctx->panel.backlight);
+		dev_err(dev, "Failed to create backlight: %d\n", ret);
+		return ret;
+	}
+
 	drm_panel_add(&ctx->panel);
 
 	ret = mipi_dsi_attach(dsi);
