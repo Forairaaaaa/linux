@@ -1030,4 +1030,11 @@ config DRM_PANEL_XINPENG_XPP055C272
 	  Say Y here if you want to enable support for the Xinpeng
 	  XPP055C272 controller for 720x1280 LCD panels with MIPI/RGB/SPI
 	  system interfaces.
+
+config DRM_PANEL_LG3P92
+	tristate "LG 3.92 AMOLED panel"
+	depends on GPIOLIB && OF
+	depends on DRM_MIPI_DSI
+	help
+		Say Y here if you want to enable support for the LG 3.92 AMOLED panel.
 endmenu
