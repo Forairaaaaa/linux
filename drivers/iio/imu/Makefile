@@ -16,6 +16,7 @@ obj-$(CONFIG_IIO_ADIS_LIB) += adis_lib.o
 
 obj-y += bmi160/
 obj-y += bmi323/
+obj-y += bmi270/
 obj-y += bno055/
 
 obj-$(CONFIG_FXOS8700) += fxos8700_core.o
