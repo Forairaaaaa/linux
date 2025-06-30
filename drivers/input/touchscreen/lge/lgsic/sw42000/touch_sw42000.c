@@ -67,23 +67,22 @@ static void project_param_set(struct device *dev)
 	param->dfc_resume_power_ctl = R_RESET_CTL;
 
 	param->sys_driving_ctrl = U3_MODE_1_2_SWING;
-	param->sys_tc_stop_delay = 30;	// 1 frame(8.5mm) * 2 + margin(3mm)
+	param->sys_tc_stop_delay = 30; // 1 frame(8.5mm) * 2 + margin(3mm)
 
 	param->reg_debug = FUNC_OFF;
 	param->dynamic_reg = FUNC_OFF;
 
 	/* siw swipe resister control (1:left, 2:right, 3:up, 4:down) */
 
-	param->used_mode = (1<<LCD_MODE_U0)|(1<<LCD_MODE_U3)|
-		    (1<<LCD_MODE_U2_UNBLANK)|(1<<LCD_MODE_U2)|
-		    (1<<LCD_MODE_U3_QUICKCOVER)|(1<<LCD_MODE_STOP);
+	param->used_mode = (1 << LCD_MODE_U0) | (1 << LCD_MODE_U3) |
+			   (1 << LCD_MODE_U2_UNBLANK) | (1 << LCD_MODE_U2) |
+			   (1 << LCD_MODE_U3_QUICKCOVER) | (1 << LCD_MODE_STOP);
 }
 
-#define TOUCH_NOOP()	\
-	TOUCH_I("noop - %s\n", __func__)
+#define TOUCH_NOOP() TOUCH_I("noop - %s\n", __func__)
 
 #define LPWG_FAILREASON_TCI_NUM 10
-static const char * const lpwg_failreason_tci_str[LPWG_FAILREASON_TCI_NUM] = {
+static const char *const lpwg_failreason_tci_str[LPWG_FAILREASON_TCI_NUM] = {
 	[0] = "SUCCESS",
 	[1] = "DISTANCE_INTER_TAP",
 	[2] = "DISTANCE_TOUCHSLOP",
@@ -97,7 +96,7 @@ static const char * const lpwg_failreason_tci_str[LPWG_FAILREASON_TCI_NUM] = {
 };
 
 #define LPWG_FAILREASON_SWIPE_NUM 11
-static const char * const lpwg_failreason_swipe_str[LPWG_FAILREASON_SWIPE_NUM] = {
+static const char *const lpwg_failreason_swipe_str[LPWG_FAILREASON_SWIPE_NUM] = {
 	[0] = "ERROR",
 	[1] = "FINGER_FAST_RELEASE",
 	[2] = "MULTI_FINGER",
@@ -113,17 +112,19 @@ static const char * const lpwg_failreason_swipe_str[LPWG_FAILREASON_SWIPE_NUM] =
 
 #if defined(__SUPPORT_LONGPRESS)
 #define LPWG_FAILREASON_LONGPRESS_NUM 6
-static const char * const lpwg_failreason_longpress_str[LPWG_FAILREASON_LONGPRESS_NUM] = {
-	[0] = "SUCCESS",
-	[1] = "MULTI_FINGER",
-	[2] = "TOUCH_FAST_RELEASE",
-	[3] = "TOUCH_SLOPE_FAIL",
-	[4] = "OUT_OF_AREA",
-	[5] = "PALM_STATE",
-};
+static const char
+	*const lpwg_failreason_longpress_str[LPWG_FAILREASON_LONGPRESS_NUM] = {
+		[0] = "SUCCESS",
+		[1] = "MULTI_FINGER",
+		[2] = "TOUCH_FAST_RELEASE",
+		[3] = "TOUCH_SLOPE_FAIL",
+		[4] = "OUT_OF_AREA",
+		[5] = "PALM_STATE",
+	};
 #endif
 #define IC_STATUS_INFO_NUM 5
-static const int __used ic_status_info_idx[IC_STATUS_INFO_NUM] = {1, 2, 3, 4, 5};
+static const int __used ic_status_info_idx[IC_STATUS_INFO_NUM] = { 1, 2, 3, 4,
+								   5 };
 static const char __used *ic_status_info_str[32] = {
 	[1] = "Boot Up CRC Fail",
 	[2] = "Not occur tch_attn interrupt from system",
@@ -133,7 +134,9 @@ static const char __used *ic_status_info_str[32] = {
 };
 
 #define TC_STATUS_INFO_NUM 9
-static const int __used tc_status_info_idx[TC_STATUS_INFO_NUM] = {5, 6, 7, 9, 10, 15, 20, 22, 28};
+static const int __used tc_status_info_idx[TC_STATUS_INFO_NUM] = { 5,  6,  7,
+								   9,  10, 15,
+								   20, 22, 28 };
 static const char __used *tc_status_info_str[32] = {
 	[5] = "Device Check Failed",
 	[6] = "Code CRC Invalid",
@@ -155,15 +158,9 @@ static const char *debug_str[LPWG_DEBUG_NUM] = {
 
 #define TCI_CTRL_NUM 9
 static const char *tci_cmd_str[TCI_CTRL_NUM] = {
-	"ENABLE_CTRL",
-	"TAP_COUNT_CTRL",
-	"MIN_INTERTAP_CTRL",
-	"MAX_INTERTAP_CTRL",
-	"TOUCH_SLOP_CTRL",
-	"TAP_DISTANCE_CTRL",
-	"INTERRUPT_DELAY_CTRL",
-	"ACTIVE_AREA_CTRL",
-	"ACTIVE_AREA_RESET_CTRL",
+	"ENABLE_CTRL",		"TAP_COUNT_CTRL",   "MIN_INTERTAP_CTRL",
+	"MAX_INTERTAP_CTRL",	"TOUCH_SLOP_CTRL",  "TAP_DISTANCE_CTRL",
+	"INTERRUPT_DELAY_CTRL", "ACTIVE_AREA_CTRL", "ACTIVE_AREA_RESET_CTRL",
 };
 
 #define DEBUG_INFO_NUM 32
@@ -178,28 +175,28 @@ static const char __used *debug_info_str[DEBUG_INFO_NUM] = {
 	[7] = "DBG_DBG_MSG_FULL",
 	[8] = "DBG_PRE_MA_OVF_ERR",
 	[9] = "DBG_ADC_OVF_ERR",
-	[10] = "DBG_CM3_FAULT",			// 0x0A
-	[11] = "DBG_UNKNOWN_TEST_MSG [0x0B]",	// 0x0B
-	[12] = "DBG_FLASH_EDTECT_ERR",		// 0x0C
-	[13] = "DBG_MEM_ACCESS_ISR",		// 0x0D
-	[14] = "DBG_DISPLAY_CHANGE_IRQ",	// 0x0E
-	[15] = "DBG_PT_CHKSUM_ERR",		// 0x0F
-	[16] = "DBG_UNKNOWN_CMD",		// 0x10
-	[17] = "DBG_TE_FREQ_REPORT",		// 0x11
-	[18] = "DBG_STACK_OVERFLOW_ERR",	// 0x12
-	[19] = "DBG_ABNORMAL_ACCESS_ERR",	// 0x13
-	[20] = "DBG_UNKNOWN_TEST_MSG [0x14]",	// 0x14
-	[21] = "DBG_UNKNOWN_TEST_MSG [0x15]",	// 0x15
-	[22] = "DBG_CG_CTL_INT",		// 0x16
-	[23] = "DBG_DCS_IRQ",			// 0x17
-	[24] = "DBG_DISPLAY_IRQ",		// 0x18
-	[25] = "DBG_USER1_IRQ",			// 0x19
-	[26] = "DBG_CMD_Q_FULL",		// 0x1A
-	[27] = "DBG_TC_DRV_START_SKIP",		// 0x1B
-	[28] = "DBG_TC_DRV_CMD_INVALID",	// 0x1C
-	[29] = "DBG_UNKNOWN_TEST_MSG [0x1D]",	// 0x1D
-	[30] = "DBG_CFG_S_IDX",			// 0x1E
-	[31] = "DBG_UNKNOWN_TEST_MSG [0x1F]",	// 0x1F
+	[10] = "DBG_CM3_FAULT", // 0x0A
+	[11] = "DBG_UNKNOWN_TEST_MSG [0x0B]", // 0x0B
+	[12] = "DBG_FLASH_EDTECT_ERR", // 0x0C
+	[13] = "DBG_MEM_ACCESS_ISR", // 0x0D
+	[14] = "DBG_DISPLAY_CHANGE_IRQ", // 0x0E
+	[15] = "DBG_PT_CHKSUM_ERR", // 0x0F
+	[16] = "DBG_UNKNOWN_CMD", // 0x10
+	[17] = "DBG_TE_FREQ_REPORT", // 0x11
+	[18] = "DBG_STACK_OVERFLOW_ERR", // 0x12
+	[19] = "DBG_ABNORMAL_ACCESS_ERR", // 0x13
+	[20] = "DBG_UNKNOWN_TEST_MSG [0x14]", // 0x14
+	[21] = "DBG_UNKNOWN_TEST_MSG [0x15]", // 0x15
+	[22] = "DBG_CG_CTL_INT", // 0x16
+	[23] = "DBG_DCS_IRQ", // 0x17
+	[24] = "DBG_DISPLAY_IRQ", // 0x18
+	[25] = "DBG_USER1_IRQ", // 0x19
+	[26] = "DBG_CMD_Q_FULL", // 0x1A
+	[27] = "DBG_TC_DRV_START_SKIP", // 0x1B
+	[28] = "DBG_TC_DRV_CMD_INVALID", // 0x1C
+	[29] = "DBG_UNKNOWN_TEST_MSG [0x1D]", // 0x1D
+	[30] = "DBG_CFG_S_IDX", // 0x1E
+	[31] = "DBG_UNKNOWN_TEST_MSG [0x1F]", // 0x1F
 };
 
 void sw42000_xfer_msg_ready(struct device *dev, u8 msg_cnt)
@@ -228,8 +225,8 @@ int sw42000_xfer_msg(struct device *dev, struct touch_xfer_msg *xfer)
 		buf_cnt = 0;
 		tx = &xfer->data[i].tx;
 		rx = &xfer->data[i].rx;
-		if (rx->addr >= command_start_addr && rx->addr
-				<= command_end_addr)
+		if (rx->addr >= command_start_addr &&
+		    rx->addr <= command_end_addr)
 			addr_check = 1;
 		else
 			addr_check = 0;
@@ -259,12 +256,11 @@ int sw42000_xfer_msg(struct device *dev, struct touch_xfer_msg *xfer)
 				TOUCH_E("buffer overflow\n");
 				ret = -EOVERFLOW;
 				goto error;
-
 			}
 
 			tx->data[0] = (tx->size > 4) ? 0x60 : 0x40;
 			tx->data[0] |= ((tx->addr >> 8) & 0x0f);
-			tx->data[1] = (tx->addr  & 0xff);
+			tx->data[1] = (tx->addr & 0xff);
 			memcpy(&tx->data[w_hdr_size], tx->buf, tx->size);
 			tx->size += w_hdr_size;
 		}
@@ -281,7 +277,7 @@ int sw42000_xfer_msg(struct device *dev, struct touch_xfer_msg *xfer)
 
 		if (rx->size) {
 			memcpy(rx->buf, rx->data + r_hdr_size,
-					(rx->size - r_hdr_size));
+			       (rx->size - r_hdr_size));
 		}
 	}
 
@@ -301,7 +297,9 @@ int sw42000_reg_read(struct device *dev, u16 addr, void *data, int size)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
-	struct touch_bus_msg msg = {0, };
+	struct touch_bus_msg msg = {
+		0,
+	};
 	int buf_cnt = 0;
 	int r_hdr_size = R_HEADER_SIZE_I2C;
 	int w_hdr_size = W_HEADER_SIZE_I2C;
@@ -355,8 +353,10 @@ int sw42000_reg_write(struct device *dev, u16 addr, void *data, int size)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
-	struct touch_bus_msg msg = {0, };
-	int w_hdr_size = W_HEADER_SIZE_I2C;	/* default for i2c & spi */
+	struct touch_bus_msg msg = {
+		0,
+	};
+	int w_hdr_size = W_HEADER_SIZE_I2C; /* default for i2c & spi */
 	int ret = 0;
 
 #if defined(CONFIG_SECURE_TOUCH)
@@ -373,7 +373,7 @@ int sw42000_reg_write(struct device *dev, u16 addr, void *data, int size)
 	ts->tx_buf[0] = ((size > 4) ? 0x60 : 0x40);
 
 	ts->tx_buf[0] |= ((addr >> 8) & 0x0f);
-	ts->tx_buf[1] = (addr  & 0xff);
+	ts->tx_buf[1] = (addr & 0xff);
 
 	msg.tx_buf = ts->tx_buf;
 	msg.tx_size = w_hdr_size + size;
@@ -396,7 +396,7 @@ int sw42000_reg_write(struct device *dev, u16 addr, void *data, int size)
 #if defined(CONFIG_DRM_MSM) && defined(CONFIG_FB)
 #if defined(CONFIG_LGE_TOUCH_USE_PANEL_NOTIFY)
 static int sw42000_drm_notifier_callback(struct notifier_block *self,
-		unsigned long event, void *data)
+					 unsigned long event, void *data)
 {
 	struct msm_drm_notifier *ev = (struct msm_drm_notifier *)data;
 
@@ -416,7 +416,7 @@ static int sw42000_drm_notifier_callback(struct notifier_block *self,
 #endif
 #elif defined(CONFIG_FB)
 static int sw42000_fb_notifier_callback(struct notifier_block *self,
-		unsigned long event, void *data)
+					unsigned long event, void *data)
 {
 	struct fb_event *ev = (struct fb_event *)data;
 
@@ -605,14 +605,14 @@ static int sw42000_ic_boot_check(struct device *dev, u32 *boot_st)
 	err |= (rdata_crc != CRC_FIXED_VALUE);
 
 	ret = sw42000_read_value(dev, GDMA_CRC_PASS, &rdata_pass);
-	err |= (!rdata_pass)<<1;
+	err |= (!rdata_pass) << 1;
 
 	ret = sw42000_read_value(dev, INFO_PTR_ADDR, &rdata_ptr);
-	err |= (!rdata_ptr)<<2;
+	err |= (!rdata_ptr) << 2;
 
 	if (err) {
-		TOUCH_E("boot status, %Xh(%Xh, %Xh, %Xh)\n",
-				err, rdata_crc, rdata_pass, rdata_ptr);
+		TOUCH_E("boot status, %Xh(%Xh, %Xh, %Xh)\n", err, rdata_crc,
+			rdata_pass, rdata_ptr);
 	}
 
 	bootmode = !err;
@@ -631,36 +631,34 @@ int sw42000_ic_info(struct device *dev)
 	int ret = 0;
 
 	memset(&d->ic_info, 0, sizeof(d->ic_info));
-	ret = sw42000_reg_read(dev, CHIP_INFO + tc_version,
-			&d->ic_info.version, sizeof(d->ic_info.version));
+	ret = sw42000_reg_read(dev, CHIP_INFO + tc_version, &d->ic_info.version,
+			       sizeof(d->ic_info.version));
 
 	ret = sw42000_reg_read(dev, CHIP_INFO + tc_product_id1,
-			&d->ic_info.product_id, sizeof(d->ic_info.product_id));
+			       &d->ic_info.product_id,
+			       sizeof(d->ic_info.product_id));
 
-	d->ic_info.product_id[sizeof(d->ic_info.product_id) - 1]  = '\0';
+	d->ic_info.product_id[sizeof(d->ic_info.product_id) - 1] = '\0';
 
 	ret = sw42000_reg_read(dev, PT_INFO + pt_info_channel,
-			&d->ic_info.pt_info, sizeof(d->ic_info.pt_info));
+			       &d->ic_info.pt_info, sizeof(d->ic_info.pt_info));
 
 	sw42000_ic_boot_check(dev, &bootmode);
 
 	TOUCH_I("==================== Version Info ====================\n");
 	TOUCH_I("version: v%d.%02d, build: %d, chip id: %d, protocol: %d\n",
-			d->ic_info.version.major, d->ic_info.version.minor, d->ic_info.version.build,
-			d->ic_info.version.chip_id, d->ic_info.version.protocol_ver);
+		d->ic_info.version.major, d->ic_info.version.minor,
+		d->ic_info.version.build, d->ic_info.version.chip_id,
+		d->ic_info.version.protocol_ver);
 	TOUCH_I("product id: %s", d->ic_info.product_id);
 	TOUCH_I("channel: %d, chip_rev: %d, sensor_ver: %d fpc_ver: %d\n",
-			d->ic_info.pt_info.channel,
-			d->ic_info.pt_info.chip_rev,
-			d->ic_info.pt_info.sensor_ver,
-			d->ic_info.pt_info.fpc_ver);
+		d->ic_info.pt_info.channel, d->ic_info.pt_info.chip_rev,
+		d->ic_info.pt_info.sensor_ver, d->ic_info.pt_info.fpc_ver);
 	TOUCH_I("date: 20%02d.%02d.%02d, time: %02d:%02d:%02d\n",
-			d->ic_info.pt_info.pt_date_year,
-			d->ic_info.pt_info.pt_date_month,
-			d->ic_info.pt_info.pt_date_day,
-			d->ic_info.pt_info.pt_time_hour,
-			d->ic_info.pt_info.pt_time_min,
-			d->ic_info.pt_info.pt_time_sec);
+		d->ic_info.pt_info.pt_date_year,
+		d->ic_info.pt_info.pt_date_month,
+		d->ic_info.pt_info.pt_date_day, d->ic_info.pt_info.pt_time_hour,
+		d->ic_info.pt_info.pt_time_min, d->ic_info.pt_info.pt_time_sec);
 	TOUCH_I("flash boot : %s\n", (bootmode) ? "BOOT pass" : "BOOT Fail");
 	TOUCH_I("======================================================\n");
 
@@ -671,14 +669,17 @@ int sw42000_ic_info(struct device *dev)
 	}
 
 	if (!bootmode) {
-		TOUCH_E("%s, FW Boot Fail, need to force FW upgrade\n", __func__);
+		TOUCH_E("%s, FW Boot Fail, need to force FW upgrade\n",
+			__func__);
 		ts->force_fwup = 1;
 		ret = -EPERM;
 		goto error;
 	}
 
-	if ((d->ic_info.version.chip_id != 10) || (d->ic_info.version.protocol_ver != 4)) {
-		TOUCH_E("%s, FW is in abnormal state because of ESD or something\n", __func__);
+	if ((d->ic_info.version.chip_id != 10) ||
+	    (d->ic_info.version.protocol_ver != 4)) {
+		TOUCH_E("%s, FW is in abnormal state because of ESD or something\n",
+			__func__);
 		ret = -EAGAIN;
 		goto error;
 	}
@@ -703,7 +704,6 @@ static void sw42000_get_tci_info(struct device *dev)
 	ts->tci.info[TCI_2].touch_slop = 100;
 	ts->tci.info[TCI_2].tap_distance = 255;
 	ts->tci.info[TCI_2].intr_delay = 20;
-
 }
 
 static int sw42000_get_tci_data(struct device *dev, int count)
@@ -727,8 +727,8 @@ static int sw42000_get_tci_data(struct device *dev, int count)
 		if (ts->lpwg.mode >= LPWG_PASSWORD)
 			TOUCH_I("LPWG data xxxx, xxxx\n");
 		else
-			TOUCH_I("LPWG data %d, %d\n",
-					ts->lpwg.code[i].x, ts->lpwg.code[i].y);
+			TOUCH_I("LPWG data %d, %d\n", ts->lpwg.code[i].x,
+				ts->lpwg.code[i].y);
 	}
 	ts->lpwg.code[count].x = -1;
 	ts->lpwg.code[count].y = -1;
@@ -736,31 +736,30 @@ static int sw42000_get_tci_data(struct device *dev, int count)
 	return 0;
 }
 
-static int sw42000_tci_active_area(struct device *dev,
-		u32 x1, u32 y1, u32 x2, u32 y2)
+static int sw42000_tci_active_area(struct device *dev, u32 x1, u32 y1, u32 x2,
+				   u32 y2)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	int ret = 0, i;
-	u32 active_area[4] = {x1, y1, x2, y2};
+	u32 active_area[4] = { x1, y1, x2, y2 };
 
 	if (ts->lpwg.qcover == HALL_NEAR)
 		memset(&active_area, 0, sizeof(active_area));
 
 	TOUCH_D(TRACE, "%s: x1[%d], y1[%d], x2[%d], y2[%d]\n", __func__,
-			active_area[0], active_area[1],
-			active_area[2], active_area[3]);
+		active_area[0], active_area[1], active_area[2], active_area[3]);
 
-	for (i = 0; i < sizeof(active_area)/sizeof(u32); i++)
+	for (i = 0; i < sizeof(active_area) / sizeof(u32); i++)
 		active_area[i] = (active_area[i]) | (active_area[i] << 16);
 
 	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ACTIVE_AREA_X1,
-			&active_area[0], sizeof(u32));
+				&active_area[0], sizeof(u32));
 	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ACTIVE_AREA_Y1,
-			&active_area[1], sizeof(u32));
+				&active_area[1], sizeof(u32));
 	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ACTIVE_AREA_X2,
-			&active_area[2], sizeof(u32));
+				&active_area[2], sizeof(u32));
 	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ACTIVE_AREA_Y2,
-			&active_area[3], sizeof(u32));
+				&active_area[3], sizeof(u32));
 
 	return ret;
 }
@@ -778,57 +777,63 @@ static int sw42000_tci_control(struct device *dev, int type)
 	case ENABLE_CTRL:
 		addr = ABT_CMD + TCI_ENABLE;
 		lpwg_data = ts->tci.mode;
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case TAP_COUNT_CTRL:
 		addr = ABT_CMD + TCI_TOTAL_TAP_COUNT;
 		lpwg_data = info1->tap_count | (info2->tap_count << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case MIN_INTERTAP_CTRL:
 		addr = ABT_CMD + TCI_INTER_TAP_TIME_MIN;
 		lpwg_data = info1->min_intertap | (info2->min_intertap << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case MAX_INTERTAP_CTRL:
 		addr = ABT_CMD + TCI_INTER_TAP_TIME_MAX;
 		lpwg_data = info1->max_intertap | (info2->max_intertap << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case TOUCH_SLOP_CTRL:
 		addr = ABT_CMD + TCI_INNER_TAP_DIST_MAX;
 		lpwg_data = info1->touch_slop | (info2->touch_slop << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case TAP_DISTANCE_CTRL:
 		addr = ABT_CMD + TCI_INTER_TAP_DISP_MAX;
 		lpwg_data = info1->tap_distance | (info2->tap_distance << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case INTERRUPT_DELAY_CTRL:
 		addr = ABT_CMD + TCI_INTERRUPT_DELAY_TIME;
 		lpwg_data = info1->intr_delay | (info2->intr_delay << 16);
-		ret = sw42000_reg_write(dev, addr, &lpwg_data, sizeof(lpwg_data));
+		ret = sw42000_reg_write(dev, addr, &lpwg_data,
+					sizeof(lpwg_data));
 		break;
 
 	case ACTIVE_AREA_CTRL:
-		ret = sw42000_tci_active_area(dev,
-				0 + ACT_SENSELESS_AREA_W,
-				0 + ACT_SENSELESS_AREA_W,
-				ts->caps.max_x - ACT_SENSELESS_AREA_W,
-				ts->caps.max_y - ACT_SENSELESS_AREA_W);
+		ret = sw42000_tci_active_area(
+			dev, 0 + ACT_SENSELESS_AREA_W, 0 + ACT_SENSELESS_AREA_W,
+			ts->caps.max_x - ACT_SENSELESS_AREA_W,
+			ts->caps.max_y - ACT_SENSELESS_AREA_W);
 		break;
 	default:
 		break;
 	}
-	TOUCH_D(TRACE, "%s - type : %s addr:(0x%x) val:(0x%x)\n",
-			__func__, tci_cmd_str[type], addr, lpwg_data);
+	TOUCH_D(TRACE, "%s - type : %s addr:(0x%x) val:(0x%x)\n", __func__,
+		tci_cmd_str[type], addr, lpwg_data);
 
 	return ret;
 }
@@ -838,7 +843,9 @@ static int sw42000_tci_knock(struct device *dev)
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct tci_info *info1 = &ts->tci.info[TCI_1];
 	struct tci_info *info2 = &ts->tci.info[TCI_2];
-	u32 lpwg_data[7] = {0, };
+	u32 lpwg_data[7] = {
+		0,
+	};
 	int ret = 0;
 
 	lpwg_data[0] = ts->tci.mode;
@@ -848,8 +855,8 @@ static int sw42000_tci_knock(struct device *dev)
 	lpwg_data[4] = info1->touch_slop | (info2->touch_slop << 16);
 	lpwg_data[5] = info1->tap_distance | (info2->tap_distance << 16);
 	lpwg_data[6] = info1->intr_delay | (info2->intr_delay << 16);
-	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ENABLE,
-			&lpwg_data[0], sizeof(lpwg_data));
+	ret = sw42000_reg_write(dev, ABT_CMD + TCI_ENABLE, &lpwg_data[0],
+				sizeof(lpwg_data));
 
 	ret = sw42000_tci_control(dev, ACTIVE_AREA_CTRL);
 
@@ -885,16 +892,18 @@ static void sw42000_ai_pick_enable(struct device *dev, bool enable)
 
 	if (enable) {
 		if (ts->lpwg.sensor == PROX_NEAR) {
-			TOUCH_I("%s : the function is skipped, because it is near\n", __func__);
+			TOUCH_I("%s : the function is skipped, because it is near\n",
+				__func__);
 			return;
 		}
 
 		if (ts->lpwg.mode == LPWG_NONE) {
 			TOUCH_I("%s: enable ai_pick gesture & area (lpwg_mode : %d)\n",
-					__func__, ts->lpwg.mode);
+				__func__, ts->lpwg.mode);
 
 			if (atomic_read(&ts->state.sleep) == IC_DEEP_SLEEP) {
-				TOUCH_I("%s: force wake IC by ai_pick\n", __func__);
+				TOUCH_I("%s: force wake IC by ai_pick\n",
+					__func__);
 				sw42000_sleep_ctrl(dev, IC_NORMAL);
 				sw42000_tc_driving(dev, LCD_MODE_U0);
 			}
@@ -904,14 +913,13 @@ static void sw42000_ai_pick_enable(struct device *dev, bool enable)
 			info1->tap_distance = 10;
 			sw42000_tci_knock(dev);
 
-			sw42000_tci_active_area(dev,
-					d->ai_pick.total_area.x1,
-					d->ai_pick.total_area.y1,
-					d->ai_pick.total_area.x2,
-					d->ai_pick.total_area.y2);
+			sw42000_tci_active_area(dev, d->ai_pick.total_area.x1,
+						d->ai_pick.total_area.y1,
+						d->ai_pick.total_area.x2,
+						d->ai_pick.total_area.y2);
 		} else if (ts->lpwg.mode == LPWG_PASSWORD_ONLY) {
 			TOUCH_I("%s: enable ai_pick gesture (lpwg_mode : %d)\n",
-					__func__, ts->lpwg.mode);
+				__func__, ts->lpwg.mode);
 
 			ts->tci.mode |= 0x01;
 			info1->intr_delay = ts->tci.double_tap_check ? 68 : 0;
@@ -919,17 +927,17 @@ static void sw42000_ai_pick_enable(struct device *dev, bool enable)
 			sw42000_tci_knock(dev);
 		} else {
 			TOUCH_I("%s: not need to modify lpwg setting (lpwg_mode : %d)\n",
-					__func__, ts->lpwg.mode);
+				__func__, ts->lpwg.mode);
 		}
 	} else {
 		if ((ts->lpwg.mode == LPWG_NONE) ||
-				(ts->lpwg.mode == LPWG_PASSWORD_ONLY)) {
+		    (ts->lpwg.mode == LPWG_PASSWORD_ONLY)) {
 			TOUCH_I("%s: restore lpwg setting (lpwg_mode : %d)\n",
-					__func__, ts->lpwg.mode);
+				__func__, ts->lpwg.mode);
 			sw42000_lpwg_mode(dev);
 		} else {
 			TOUCH_I("%s: not need to restore lpwg setting (lpwg_mode : %d)\n",
-					__func__, ts->lpwg.mode);
+				__func__, ts->lpwg.mode);
 		}
 	}
 }
@@ -940,11 +948,9 @@ static void sw42000_print_ai_pick_info(struct device *dev)
 
 	TOUCH_TRACE();
 
-	TOUCH_I("%s: ai_pick.enable = %d\n",
-			__func__, d->ai_pick.enable);
-	TOUCH_I("%s: active_area(%d,%d)(%d,%d)\n", __func__,
-			d->ai_pick.area.x1, d->ai_pick.area.y1,
-			d->ai_pick.area.x2, d->ai_pick.area.y2);
+	TOUCH_I("%s: ai_pick.enable = %d\n", __func__, d->ai_pick.enable);
+	TOUCH_I("%s: active_area(%d,%d)(%d,%d)\n", __func__, d->ai_pick.area.x1,
+		d->ai_pick.area.y1, d->ai_pick.area.x2, d->ai_pick.area.y2);
 }
 
 static bool sw42000_check_ai_pick_event(struct device *dev)
@@ -953,15 +959,15 @@ static bool sw42000_check_ai_pick_event(struct device *dev)
 	struct sw42000_data *d = to_sw42000_data(dev);
 	struct sw42000_active_area *area = &d->ai_pick.total_area;
 	int i = 0;
-	bool result[2] = {false, false};
+	bool result[2] = { false, false };
 
 	TOUCH_TRACE();
 
 	for (i = 0; i < 2; i++) {
-		if ((ts->lpwg.code[i].x >= area->x1)
-				&& (ts->lpwg.code[i].x <= area->x2)
-				&& (ts->lpwg.code[i].y >= area->y1)
-				&& (ts->lpwg.code[i].y <= area->y2)) {
+		if ((ts->lpwg.code[i].x >= area->x1) &&
+		    (ts->lpwg.code[i].x <= area->x2) &&
+		    (ts->lpwg.code[i].y >= area->y1) &&
+		    (ts->lpwg.code[i].y <= area->y2)) {
 			result[i] = true;
 		}
 	}
@@ -973,7 +979,8 @@ static int sw42000_lpwg_control(struct device *dev, int mode)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct tci_info *info1 = &ts->tci.info[TCI_1];
-	char *mode_str[4] = {"None", "Knock-On", "Knock-On/Code", "Knock-Code"};
+	char *mode_str[4] = { "None", "Knock-On", "Knock-On/Code",
+			      "Knock-Code" };
 	int ret = 0;
 
 	if (atomic_read(&ts->state.sleep) == IC_DEEP_SLEEP) {
@@ -1032,9 +1039,8 @@ static int sw42000_get_swipe_data(struct device *dev)
 	memcpy(&rdata, d->info.data, sizeof(u32) * 3);
 
 	TOUCH_I("Swipe Gesture: start(%4d,%4d) end(%4d,%4d) swipe_time(%dms)\n",
-			rdata[0] & 0xffff, rdata[0] >> 16,
-			rdata[1] & 0xffff, rdata[1] >> 16,
-			rdata[2] & 0xffff);
+		rdata[0] & 0xffff, rdata[0] >> 16, rdata[1] & 0xffff,
+		rdata[1] >> 16, rdata[2] & 0xffff);
 
 	ts->lpwg.code_num = 1;
 	ts->lpwg.code[0].x = rdata[1] & 0xffff;
@@ -1062,12 +1068,11 @@ static void sw42000_get_longpress_info(struct device *dev)
 	d->lpwg_longpress.slop = 100;
 	d->lpwg_longpress.press_time = 200;
 
-	TOUCH_I("%s, Long Press: %s\n", __func__, d->lpwg_longpress.enable ? "Enable" : "Disable");
-	TOUCH_I("%s, Long Press  active_area(%d,%d)(%d,%d)\n",
-			__func__,
-			d->lpwg_longpress.area.x1, d->lpwg_longpress.area.y1,
-			d->lpwg_longpress.area.x2, d->lpwg_longpress.area.y2);
-
+	TOUCH_I("%s, Long Press: %s\n", __func__,
+		d->lpwg_longpress.enable ? "Enable" : "Disable");
+	TOUCH_I("%s, Long Press  active_area(%d,%d)(%d,%d)\n", __func__,
+		d->lpwg_longpress.area.x1, d->lpwg_longpress.area.y1,
+		d->lpwg_longpress.area.x2, d->lpwg_longpress.area.y2);
 }
 
 static int sw42000_longpress_enable(struct device *dev, bool enable)
@@ -1084,13 +1089,14 @@ static int sw42000_longpress_enable(struct device *dev, bool enable)
 		u32 press_time;
 	} __packed;
 	struct lpwg_longpress_buf buf;
-	struct sw42000_active_area area = {0, };
+	struct sw42000_active_area area = {
+		0,
+	};
 	int ret = 0;
 
 	TOUCH_TRACE();
 
-	TOUCH_I("%s: %s\n", __func__,
-			(enable ? "enable" : "disable"));
+	TOUCH_I("%s: %s\n", __func__, (enable ? "enable" : "disable"));
 
 	if (enable) {
 		memset(&buf, 0, sizeof(buf));
@@ -1116,21 +1122,22 @@ static int sw42000_longpress_enable(struct device *dev, bool enable)
 		buf.slop = d->lpwg_longpress.slop;
 		buf.press_time = d->lpwg_longpress.press_time;
 
-		ret = sw42000_reg_write(dev, ABT_CMD + LONG_PRESS_ENABLE, &buf, sizeof(buf));
+		ret = sw42000_reg_write(dev, ABT_CMD + LONG_PRESS_ENABLE, &buf,
+					sizeof(buf));
 		if (ret < 0)
 			TOUCH_E("failed to write long press register (ret = %d)\n",
-					ret);
+				ret);
 		else {
 			set_debug_reason(dev, LPWG_DEBUG_LONGPRESS);
 		}
 	} else {
 		memset(&(buf.enable), 0, sizeof(buf.enable));
 
-		ret = sw42000_reg_write(dev, ABT_CMD + LONG_PRESS_ENABLE, &(buf.enable),
-				sizeof(buf.enable));
+		ret = sw42000_reg_write(dev, ABT_CMD + LONG_PRESS_ENABLE,
+					&(buf.enable), sizeof(buf.enable));
 		if (ret < 0)
 			TOUCH_E("failed to clear long press register (ret = %d)\n",
-					ret);
+				ret);
 	}
 
 	return ret;
@@ -1139,7 +1146,6 @@ static int sw42000_longpress_enable(struct device *dev, bool enable)
 
 static void sw42000_get_swipe_info(struct device *dev)
 {
-
 	struct touch_core_data *ts = to_touch_core(dev);
 
 	TOUCH_TRACE();
@@ -1306,13 +1312,14 @@ static int sw42000_lpwg_abs_enable(struct device *dev, bool enable)
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
 	struct lpwg_abs_buf buf;
-	struct sw42000_active_area area = {0, };
+	struct sw42000_active_area area = {
+		0,
+	};
 	int ret = 0;
 
 	TOUCH_TRACE();
 
-	TOUCH_I("%s: lpwg_abs %s\n", __func__,
-			(enable ? "enable" : "disable"));
+	TOUCH_I("%s: lpwg_abs %s\n", __func__, (enable ? "enable" : "disable"));
 
 	if (enable) {
 		memset(&buf, 0, sizeof(buf));
@@ -1336,18 +1343,19 @@ static int sw42000_lpwg_abs_enable(struct device *dev, bool enable)
 		buf.end_x = area.x2;
 		buf.end_y = area.y2;
 
-		ret = sw42000_reg_write(dev, ABT_CMD + LPWG_ABS_ENABLE, &buf, sizeof(buf));
+		ret = sw42000_reg_write(dev, ABT_CMD + LPWG_ABS_ENABLE, &buf,
+					sizeof(buf));
 		if (ret < 0)
 			TOUCH_E("failed to write lpwg abs_registers (ret = %d)\n",
-					ret);
+				ret);
 	} else {
 		memset(&(buf.enable), 0, sizeof(buf.enable));
 
-		ret = sw42000_reg_write(dev, ABT_CMD + LPWG_ABS_ENABLE, &(buf.enable),
-				sizeof(buf.enable));
+		ret = sw42000_reg_write(dev, ABT_CMD + LPWG_ABS_ENABLE,
+					&(buf.enable), sizeof(buf.enable));
 		if (ret < 0)
 			TOUCH_E("failed to clear LPWG_ABS_ENABLE register (ret = %d)\n",
-					ret);
+				ret);
 	}
 
 	touch_report_all_event(ts);
@@ -1376,21 +1384,23 @@ static void sw42000_print_lpwg_abs_info(struct device *dev)
 
 	TOUCH_I("%s: lpwg_abs.enable = %d\n", __func__, d->lpwg_abs.enable);
 	TOUCH_I("%s: active_area(%d,%d)(%d,%d)\n", __func__,
-			d->lpwg_abs.area.x1, d->lpwg_abs.area.y1,
-			d->lpwg_abs.area.x2, d->lpwg_abs.area.y2);
+		d->lpwg_abs.area.x1, d->lpwg_abs.area.y1, d->lpwg_abs.area.x2,
+		d->lpwg_abs.area.y2);
 }
 
 static int sw42000_swipe_enable(struct device *dev, bool enable)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 
-	struct swipe_ctrl *ctrl[SW42000_SWIPE_NUM] = {	/* L, R, U, D */
+	struct swipe_ctrl *ctrl[SW42000_SWIPE_NUM] = {
+		/* L, R, U, D */
 		&ts->swipe[SWIPE_L],
 		&ts->swipe[SWIPE_R],
 		&ts->swipe[SWIPE_U],
 		&ts->swipe[SWIPE_D],
 	};
-	struct swipe_ctrl *ctrl2[SW42000_SWIPE2_NUM] = {	/* L2, R2 */
+	struct swipe_ctrl *ctrl2[SW42000_SWIPE2_NUM] = {
+		/* L2, R2 */
 		&ts->swipe[SWIPE_L2],
 		&ts->swipe[SWIPE_R2],
 	};
@@ -1432,19 +1442,21 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 	TOUCH_I("%s: SWIPE L(%d),R(%d),U(%d),D(%d),L2(%d),R2(%d)\n", __func__,
 		ctrl[SW42000_SWIPE_L]->enable, ctrl[SW42000_SWIPE_R]->enable,
 		ctrl[SW42000_SWIPE_U]->enable, ctrl[SW42000_SWIPE_D]->enable,
-		ctrl2[SW42000_SWIPE2_L]->enable, ctrl2[SW42000_SWIPE2_R]->enable);
+		ctrl2[SW42000_SWIPE2_L]->enable,
+		ctrl2[SW42000_SWIPE2_R]->enable);
 
 	if (enable) {
 		memset(&buf, 0, sizeof(buf));
 
-		for (i = 0; i < SW42000_SWIPE_NUM; i++) {	/* L, R, U, D  */
+		for (i = 0; i < SW42000_SWIPE_NUM; i++) { /* L, R, U, D  */
 			buf.enable[i] = ctrl[i]->enable;
 			buf.distance[i] = ctrl[i]->distance;
 			buf.ratio_thres[i] = ctrl[i]->ratio_thres;
 			buf.min_time[i] = ctrl[i]->min_time;
 			buf.max_time[i] = ctrl[i]->max_time;
 			buf.wrong_dir_thres[i] = ctrl[i]->wrong_dir_thres;
-			buf.init_ratio_chk_dist[i] = ctrl[i]->init_ratio_chk_dist;
+			buf.init_ratio_chk_dist[i] =
+				ctrl[i]->init_ratio_chk_dist;
 			buf.init_ratio_thres[i] = ctrl[i]->init_ratio_thres;
 
 			area[i].x1 = ctrl[i]->area.x1 - ctrl[i]->border_area.x1;
@@ -1460,16 +1472,20 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 			if (area[i].y2 > ts->caps.max_y)
 				area[i].y2 = ts->caps.max_y;
 
-			start_area[i].x1 = ctrl[i]->start_area.x1 - ctrl[i]->start_border_area.x1;
+			start_area[i].x1 = ctrl[i]->start_area.x1 -
+					   ctrl[i]->start_border_area.x1;
 			if (start_area[i].x1 < 0)
 				start_area[i].x1 = 0;
-			start_area[i].y1 = ctrl[i]->start_area.y1 - ctrl[i]->start_border_area.y1;
+			start_area[i].y1 = ctrl[i]->start_area.y1 -
+					   ctrl[i]->start_border_area.y1;
 			if (start_area[i].y1 < 0)
 				start_area[i].y1 = 0;
-			start_area[i].x2 = ctrl[i]->start_area.x2 + ctrl[i]->start_border_area.x2;
+			start_area[i].x2 = ctrl[i]->start_area.x2 +
+					   ctrl[i]->start_border_area.x2;
 			if (start_area[i].x2 > ts->caps.max_x)
 				start_area[i].x2 = ts->caps.max_x;
-			start_area[i].y2 = ctrl[i]->start_area.y2 + ctrl[i]->start_border_area.y2;
+			start_area[i].y2 = ctrl[i]->start_area.y2 +
+					   ctrl[i]->start_border_area.y2;
 			if (start_area[i].y2 > ts->caps.max_y)
 				start_area[i].y2 = ts->caps.max_y;
 
@@ -1514,39 +1530,48 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 
 		memset(&buf2, 0, sizeof(buf2));
 
-		for (i = 0; i < SW42000_SWIPE2_NUM; i++) {	/* L2, R2 */
+		for (i = 0; i < SW42000_SWIPE2_NUM; i++) { /* L2, R2 */
 			buf2.enable[i] = ctrl2[i]->enable;
 			buf2.distance[i] = ctrl2[i]->distance;
 			buf2.ratio_thres[i] = ctrl2[i]->ratio_thres;
 			buf2.min_time[i] = ctrl2[i]->min_time;
 			buf2.max_time[i] = ctrl2[i]->max_time;
 			buf2.wrong_dir_thres[i] = ctrl2[i]->wrong_dir_thres;
-			buf2.init_ratio_chk_dist[i] = ctrl2[i]->init_ratio_chk_dist;
+			buf2.init_ratio_chk_dist[i] =
+				ctrl2[i]->init_ratio_chk_dist;
 			buf2.init_ratio_thres[i] = ctrl2[i]->init_ratio_thres;
 
-			area[i].x1 = ctrl2[i]->area.x1 - ctrl2[i]->border_area.x1;
+			area[i].x1 =
+				ctrl2[i]->area.x1 - ctrl2[i]->border_area.x1;
 			if (area[i].x1 < 0)
 				area[i].x1 = 0;
-			area[i].y1 = ctrl2[i]->area.y1 - ctrl2[i]->border_area.y1;
+			area[i].y1 =
+				ctrl2[i]->area.y1 - ctrl2[i]->border_area.y1;
 			if (area[i].y1 < 0)
 				area[i].y1 = 0;
-			area[i].x2 = ctrl2[i]->area.x2 + ctrl2[i]->border_area.x2;
+			area[i].x2 =
+				ctrl2[i]->area.x2 + ctrl2[i]->border_area.x2;
 			if (area[i].x2 > ts->caps.max_x)
 				area[i].x2 = ts->caps.max_x;
-			area[i].y2 = ctrl2[i]->area.y2 + ctrl2[i]->border_area.y2;
+			area[i].y2 =
+				ctrl2[i]->area.y2 + ctrl2[i]->border_area.y2;
 			if (area[i].y2 > ts->caps.max_y)
 				area[i].y2 = ts->caps.max_y;
 
-			start_area[i].x1 = ctrl2[i]->start_area.x1 - ctrl2[i]->start_border_area.x1;
+			start_area[i].x1 = ctrl2[i]->start_area.x1 -
+					   ctrl2[i]->start_border_area.x1;
 			if (start_area[i].x1 < 0)
 				start_area[i].x1 = 0;
-			start_area[i].y1 = ctrl2[i]->start_area.y1 - ctrl2[i]->start_border_area.y1;
+			start_area[i].y1 = ctrl2[i]->start_area.y1 -
+					   ctrl2[i]->start_border_area.y1;
 			if (start_area[i].y1 < 0)
 				start_area[i].y1 = 0;
-			start_area[i].x2 = ctrl2[i]->start_area.x2 + ctrl2[i]->start_border_area.x2;
+			start_area[i].x2 = ctrl2[i]->start_area.x2 +
+					   ctrl2[i]->start_border_area.x2;
 			if (start_area[i].x2 > ts->caps.max_x)
 				start_area[i].x2 = ts->caps.max_x;
-			start_area[i].y2 = ctrl2[i]->start_area.y2 + ctrl2[i]->start_border_area.y2;
+			start_area[i].y2 = ctrl2[i]->start_area.y2 +
+					   ctrl2[i]->start_border_area.y2;
 			if (start_area[i].y2 > ts->caps.max_y)
 				start_area[i].y2 = ts->caps.max_y;
 
@@ -1572,22 +1597,23 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 		buf2.start[7] = start_area[SW42000_SWIPE2_R].y2;
 
 		if (atomic_read(&ts->state.sleep) == IC_NORMAL) {
-			TOUCH_D(TRACE, "state.sleep : %d\n", atomic_read(&ts->state.sleep));
+			TOUCH_D(TRACE, "state.sleep : %d\n",
+				atomic_read(&ts->state.sleep));
 
-			ret = sw42000_reg_write(dev, ABT_CMD + SWIPE_ON,
-					&buf, sizeof(buf));
+			ret = sw42000_reg_write(dev, ABT_CMD + SWIPE_ON, &buf,
+						sizeof(buf));
 			if (ret < 0) {
 				TOUCH_E("failed to write swipe registers (ret = %d)\n",
-						ret);
+					ret);
 			} else {
 				set_debug_reason(dev, LPWG_DEBUG_SWIPE);
 			}
 
-			ret = sw42000_reg_write(dev, ABT_CMD + SWIPE2_ON,
-					&buf2, sizeof(buf2));
+			ret = sw42000_reg_write(dev, ABT_CMD + SWIPE2_ON, &buf2,
+						sizeof(buf2));
 			if (ret < 0) {
 				TOUCH_E("failed to write swipe2 registers (ret = %d)\n",
-						ret);
+					ret);
 			}
 		} else {
 			TOUCH_I("%s : not set(deep sleep)\n", __func__);
@@ -1598,11 +1624,11 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 
 		memset(&(buf.enable), 0, sizeof(buf.enable));
 
-		ret = sw42000_reg_write(dev, ABT_CMD + SWIPE_ON,
-				&(buf.enable), sizeof(buf.enable));
+		ret = sw42000_reg_write(dev, ABT_CMD + SWIPE_ON, &(buf.enable),
+					sizeof(buf.enable));
 		if (ret < 0)
 			TOUCH_E("failed to clear SWIPE_ENABLE register (ret = %d)\n",
-					ret);
+				ret);
 
 		for (i = 0; i < SW42000_SWIPE2_NUM; i++)
 			ctrl2[i]->debug_enable = false;
@@ -1610,10 +1636,10 @@ static int sw42000_swipe_enable(struct device *dev, bool enable)
 		memset(&(buf2.enable), 0, sizeof(buf2.enable));
 
 		ret = sw42000_reg_write(dev, ABT_CMD + SWIPE2_ON,
-				&(buf2.enable), sizeof(buf2.enable));
+					&(buf2.enable), sizeof(buf2.enable));
 		if (ret < 0)
 			TOUCH_E("failed to clear SWIPE2_ENABLE register (ret = %d)\n",
-					ret);
+				ret);
 	}
 
 	return ret;
@@ -1626,11 +1652,12 @@ static int sw42000_clock(struct device *dev, u32 onoff)
 
 	if (onoff) {
 		if (ts->bus_type == HWIF_SPI) {
-			sw42000_reg_write(dev, SPI_OSC_CTL, &onoff, sizeof(onoff));
+			sw42000_reg_write(dev, SPI_OSC_CTL, &onoff,
+					  sizeof(onoff));
 			atomic_set(&ts->state.sleep, IC_NORMAL);
 			touch_interrupt_control(ts->dev, INTERRUPT_ENABLE);
-			TOUCH_I("IC Clock(0x%x) = %s\n",
-					SPI_OSC_CTL, (onoff == 0) ? "0 (off)" : "1 (on)");
+			TOUCH_I("IC Clock(0x%x) = %s\n", SPI_OSC_CTL,
+				(onoff == 0) ? "0 (off)" : "1 (on)");
 
 		} else {
 			/*
@@ -1644,33 +1671,28 @@ static int sw42000_clock(struct device *dev, u32 onoff)
 		touch_interrupt_control(ts->dev, INTERRUPT_DISABLE);
 		sw42000_reg_write(dev, SYS_LDO_CTL, &onoff, sizeof(onoff));
 		sw42000_reg_write(dev, SPI_OSC_CTL, &onoff, sizeof(onoff));
-		TOUCH_I("LDO CTRL(0x%x) = %s\n",
-				SYS_LDO_CTL, (onoff == 0) ? "0 (off)" : "1 (on)");
-		TOUCH_I("IC Clock(0x%x) = %s\n",
-				SPI_OSC_CTL, (onoff == 0) ? "0 (off)" : "1 (on)");
+		TOUCH_I("LDO CTRL(0x%x) = %s\n", SYS_LDO_CTL,
+			(onoff == 0) ? "0 (off)" : "1 (on)");
+		TOUCH_I("IC Clock(0x%x) = %s\n", SPI_OSC_CTL,
+			(onoff == 0) ? "0 (off)" : "1 (on)");
 		atomic_set(&ts->state.sleep, IC_DEEP_SLEEP);
 	}
 
 	return 0;
 }
-#else	/* __SUPPORT_CLK_CTRL */
+#else /* __SUPPORT_CLK_CTRL */
 static inline int sw42000_clock(struct device *dev, u32 onoff)
 {
 	TOUCH_NOOP();
 	return 0;
 }
-#endif	/* __SUPPORT_CLK_CTRL */
+#endif /* __SUPPORT_CLK_CTRL */
 
 static const char *driving_cmd_str[LCD_MODE_NUM] = {
-	"LCD_MODE_U0",
-	"LCD_MODE_U2_UNBLANK",
-	"LCD_MODE_U2",
-	"LCD_MODE_U3",
-	"LCD_MODE_U3_PARTIAL",
-	"LCD_MODE_U3_QUICKCOVER",
+	"LCD_MODE_U0",	 "LCD_MODE_U2_UNBLANK", "LCD_MODE_U2",
+	"LCD_MODE_U3",	 "LCD_MODE_U3_PARTIAL", "LCD_MODE_U3_QUICKCOVER",
 	"LCD_MODE_STOP",
 };
-
 
 int sw42000_tc_driving(struct device *dev, int mode)
 {
@@ -1688,7 +1710,7 @@ int sw42000_tc_driving(struct device *dev, int mode)
 		return 0;
 	}
 
-	if (!(param->used_mode & (1<<mode))) {
+	if (!(param->used_mode & (1 << mode))) {
 		TOUCH_D(TRACE, "tc_driving canceled (mode:%d)\n", mode);
 		goto out;
 	}
@@ -1696,10 +1718,12 @@ int sw42000_tc_driving(struct device *dev, int mode)
 	if ((mode != LCD_MODE_STOP) && (mode != d->driving_mode)) {
 		ctrl = 0x02;
 		sw42000_reg_write(dev, addr, &ctrl, sizeof(ctrl));
-		TOUCH_D(TRACE, "sw42000_tc_stop(0x%x) = LCD_MODE_STOP(%d), (0x%x)\n",
-				addr, mode, ctrl);
+		TOUCH_D(TRACE,
+			"sw42000_tc_stop(0x%x) = LCD_MODE_STOP(%d), (0x%x)\n",
+			addr, mode, ctrl);
 		touch_msleep(param->sys_tc_stop_delay);
-		TOUCH_D(TRACE, "tc_stop delay:(%d)\n", param->sys_tc_stop_delay);
+		TOUCH_D(TRACE, "tc_stop delay:(%d)\n",
+			param->sys_tc_stop_delay);
 	}
 
 	d->driving_mode = mode;
@@ -1735,10 +1759,9 @@ int sw42000_tc_driving(struct device *dev, int mode)
 		break;
 	}
 
-	sw42000_reg_write(dev, addr,
-			&ctrl, sizeof(ctrl));
-	TOUCH_I("sw42000_tc_driving(0x%x) = %s(%d), (0x%x)\n",
-			addr, driving_cmd_str[mode], mode, ctrl);
+	sw42000_reg_write(dev, addr, &ctrl, sizeof(ctrl));
+	TOUCH_I("sw42000_tc_driving(0x%x) = %s(%d), (0x%x)\n", addr,
+		driving_cmd_str[mode], mode, ctrl);
 
 	if (mode == LCD_MODE_STOP) {
 		touch_msleep(param->sys_tc_stop_delay);
@@ -1758,11 +1781,15 @@ int sw42000_tc_driving(struct device *dev, int mode)
 	if (param->reg_debug) {
 		if (mode != LCD_MODE_STOP) {
 			for (i = 0; i < 10; i++) {
-				sw42000_reg_read(dev, TC_IC_STATUS, (u8 *)&rdata, sizeof(u32));
-				TOUCH_I("read ic_status(%x) = %x\n", TC_IC_STATUS, rdata);
+				sw42000_reg_read(dev, TC_IC_STATUS,
+						 (u8 *)&rdata, sizeof(u32));
+				TOUCH_I("read ic_status(%x) = %x\n",
+					TC_IC_STATUS, rdata);
 
-				sw42000_reg_read(dev, TC_STATUS, (u8 *)&rdata, sizeof(u32));
-				TOUCH_I("read tc_status(%x) = %x\n", TC_STATUS, rdata);
+				sw42000_reg_read(dev, TC_STATUS, (u8 *)&rdata,
+						 sizeof(u32));
+				TOUCH_I("read tc_status(%x) = %x\n", TC_STATUS,
+					rdata);
 				if ((rdata & 0x1F) == 0x7)
 					return 0;
 				touch_msleep(50);
@@ -1782,8 +1809,8 @@ int sw42000_sleep_ctrl(struct device *dev, int new_status)
 	TOUCH_TRACE();
 
 	if (old_status == new_status) {
-		TOUCH_I("%s: skip (old_status:%d, new_status:%d)\n",
-				__func__, old_status, new_status);
+		TOUCH_I("%s: skip (old_status:%d, new_status:%d)\n", __func__,
+			old_status, new_status);
 		return ret;
 	}
 
@@ -1797,7 +1824,8 @@ int sw42000_sleep_ctrl(struct device *dev, int new_status)
 			TOUCH_I("%s: clock off\n", __func__);
 			ret = sw42000_clock(dev, 0);
 		} else {
-			TOUCH_I("%s: skip clock off in incoming_call\n", __func__);
+			TOUCH_I("%s: skip clock off in incoming_call\n",
+				__func__);
 		}
 	} else {
 		TOUCH_E("invalid new_status:%d\n", new_status);
@@ -1821,17 +1849,17 @@ static void set_debug_reason(struct device *dev, int type)
 
 	switch (type) {
 	case LPWG_DEBUG_TCI_1:
-		d->lpwg_failreason_data |= (1<<0);
+		d->lpwg_failreason_data |= (1 << 0);
 		break;
 	case LPWG_DEBUG_TCI_2:
-		d->lpwg_failreason_data |= (1<<8);
+		d->lpwg_failreason_data |= (1 << 8);
 		break;
 	case LPWG_DEBUG_SWIPE:
-		d->lpwg_failreason_data |= (1<<16);
+		d->lpwg_failreason_data |= (1 << 16);
 		break;
 #if defined(__SUPPORT_LONGPRESS)
 	case LPWG_DEBUG_LONGPRESS:
-		d->lpwg_failreason_data |= (1<<24);
+		d->lpwg_failreason_data |= (1 << 24);
 		break;
 #endif
 	default:
@@ -1842,7 +1870,8 @@ static void set_debug_reason(struct device *dev, int type)
 
 	TOUCH_D(TRACE, "failreason data:[0x%x]\n", data);
 
-	sw42000_reg_write(dev, ABT_CMD + LPWG_FAILREASON_ON, &data, sizeof(data));
+	sw42000_reg_write(dev, ABT_CMD + LPWG_FAILREASON_ON, &data,
+			  sizeof(data));
 }
 
 static void sw42000_print_failreason(struct device *dev, int type, int count)
@@ -1855,24 +1884,24 @@ static void sw42000_print_failreason(struct device *dev, int type, int count)
 
 	switch (type) {
 	case LPWG_DEBUG_TCI_1:
-		ret = sw42000_reg_read(dev, ABT_CMD + TCI0_FAILREASON_BUF,
-				&buf, sizeof(buf));
+		ret = sw42000_reg_read(dev, ABT_CMD + TCI0_FAILREASON_BUF, &buf,
+				       sizeof(buf));
 		fail_num = LPWG_FAILREASON_TCI_NUM;
 		break;
 	case LPWG_DEBUG_TCI_2:
-		ret = sw42000_reg_read(dev, ABT_CMD + TCI1_FAILREASON_BUF,
-				&buf, sizeof(buf));
+		ret = sw42000_reg_read(dev, ABT_CMD + TCI1_FAILREASON_BUF, &buf,
+				       sizeof(buf));
 		fail_num = LPWG_FAILREASON_TCI_NUM;
 		break;
 	case LPWG_DEBUG_SWIPE:
 		ret = sw42000_reg_read(dev, ABT_CMD + SWIPE_FAILREASON_BUF,
-				&buf, sizeof(buf));
+				       &buf, sizeof(buf));
 		fail_num = LPWG_FAILREASON_SWIPE_NUM;
 		break;
 #if defined(__SUPPORT_LONGPRESS)
 	case LPWG_DEBUG_LONGPRESS:
 		ret = sw42000_reg_read(dev, ABT_CMD + LONGPRESS_FAILREASON_BUF,
-				&buf, sizeof(buf));
+				       &buf, sizeof(buf));
 		fail_num = LPWG_FAILREASON_LONGPRESS_NUM;
 		break;
 #endif
@@ -1887,27 +1916,26 @@ static void sw42000_print_failreason(struct device *dev, int type, int count)
 		count = FAIL_REASON_MAX_CNT;
 
 	for (i = 0; i < count; i++) {
-
-		data = ((buf >> (8*i)) & 0xFF);
+		data = ((buf >> (8 * i)) & 0xFF);
 
 		if (data > 0 && data < fail_num) {
 			if (type == LPWG_DEBUG_TCI_1)
 				TOUCH_I("[%s]-DBG[%d/%d] = %s\n",
-						debug_str[type], i + 1, count,
-						lpwg_failreason_tci_str[data]);
+					debug_str[type], i + 1, count,
+					lpwg_failreason_tci_str[data]);
 			if (type == LPWG_DEBUG_TCI_2)
 				TOUCH_I("[%s]-DBG[%d/%d] = %s\n",
-						debug_str[type], i + 1, count,
-						lpwg_failreason_tci_str[data]);
+					debug_str[type], i + 1, count,
+					lpwg_failreason_tci_str[data]);
 			if (type == LPWG_DEBUG_SWIPE)
 				TOUCH_I("[%s]-DBG[%d/%d] = %s\n",
-						debug_str[type], i + 1, count,
-						lpwg_failreason_swipe_str[data]);
+					debug_str[type], i + 1, count,
+					lpwg_failreason_swipe_str[data]);
 #if defined(__SUPPORT_LONGPRESS)
 			if (type == LPWG_DEBUG_LONGPRESS)
 				TOUCH_I("[%s]-DBG[%d/%d] = %s\n",
-						debug_str[type], i + 1, count,
-						lpwg_failreason_longpress_str[data]);
+					debug_str[type], i + 1, count,
+					lpwg_failreason_longpress_str[data]);
 #endif
 		} else {
 			break;
@@ -1921,13 +1949,15 @@ static void sw42000_lpwg_failreason(struct device *dev)
 	u32 status = 0;
 	int ret = 0;
 	int i = 0;
-	u8 count[4] = {0, };
+	u8 count[4] = {
+		0,
+	};
 
 	if (!d->lpwg_failreason_ctrl)
 		return;
 
-	ret = sw42000_reg_read(dev, ABT_CMD + LPWG_FAILREASON_STS,
-			&status, sizeof(status));
+	ret = sw42000_reg_read(dev, ABT_CMD + LPWG_FAILREASON_STS, &status,
+			       sizeof(status));
 
 	if (ret < 0)
 		return;
@@ -1946,23 +1976,23 @@ static void sw42000_lpwg_failreason(struct device *dev)
 
 	if (count[LPWG_DEBUG_TCI_1]) { /* Knock-on */
 		sw42000_print_failreason(dev, LPWG_DEBUG_TCI_1,
-				count[LPWG_DEBUG_TCI_1]);
+					 count[LPWG_DEBUG_TCI_1]);
 	}
 
 	if (count[LPWG_DEBUG_TCI_2]) { /* Knock-code */
 		sw42000_print_failreason(dev, LPWG_DEBUG_TCI_2,
-				count[LPWG_DEBUG_TCI_2]);
+					 count[LPWG_DEBUG_TCI_2]);
 	}
 
 	if (count[LPWG_DEBUG_SWIPE]) { /* Swipe */
 		sw42000_print_failreason(dev, LPWG_DEBUG_SWIPE,
-				count[LPWG_DEBUG_SWIPE]);
+					 count[LPWG_DEBUG_SWIPE]);
 	}
 
 #if defined(__SUPPORT_LONGPRESS)
 	if (count[LPWG_DEBUG_LONGPRESS]) { /* LongPress */
 		sw42000_print_failreason(dev, LPWG_DEBUG_LONGPRESS,
-				count[LPWG_DEBUG_LONGPRESS]);
+					 count[LPWG_DEBUG_LONGPRESS]);
 	}
 #endif
 }
@@ -1996,7 +2026,8 @@ static int sw42000_lpwg_mode(struct device *dev)
 			sw42000_lpwg_failreason(dev);
 		} else if (ts->lpwg.sensor == PROX_NEAR) {
 			/* deep sleep */
-			TOUCH_I("%s %d line - deep sleep by prox\n", __func__, __LINE__);
+			TOUCH_I("%s %d line - deep sleep by prox\n", __func__,
+				__LINE__);
 			sw42000_sleep_ctrl(dev, IC_DEEP_SLEEP);
 		} else if (ts->lpwg.qcover == HALL_NEAR) {
 			/* Deep Sleep same as Prox near  */
@@ -2004,18 +2035,18 @@ static int sw42000_lpwg_mode(struct device *dev)
 			sw42000_sleep_ctrl(dev, IC_DEEP_SLEEP);
 		} else {
 			/* knock on/code */
-			TOUCH_D(TRACE, "knock mode %d, screen %d, proxy %d, qcover %d\n",
-					ts->lpwg.mode, ts->lpwg.screen,
-					ts->lpwg.sensor, ts->lpwg.qcover);
+			TOUCH_D(TRACE,
+				"knock mode %d, screen %d, proxy %d, qcover %d\n",
+				ts->lpwg.mode, ts->lpwg.screen, ts->lpwg.sensor,
+				ts->lpwg.qcover);
 
-			if (ts->lpwg.mode == LPWG_NONE
-					&& !ts->swipe[SWIPE_L].enable
-					&& !ts->swipe[SWIPE_R].enable
-					&& !ts->swipe[SWIPE_U].enable
-					&& !ts->swipe[SWIPE_D].enable
-					&& !ts->swipe[SWIPE_L2].enable
-					&& !ts->swipe[SWIPE_R2].enable
-					&& !d->ai_pick.enable) {
+			if (ts->lpwg.mode == LPWG_NONE &&
+			    !ts->swipe[SWIPE_L].enable &&
+			    !ts->swipe[SWIPE_R].enable &&
+			    !ts->swipe[SWIPE_U].enable &&
+			    !ts->swipe[SWIPE_D].enable &&
+			    !ts->swipe[SWIPE_L2].enable &&
+			    !ts->swipe[SWIPE_R2].enable && !d->ai_pick.enable) {
 				/* knock on/code disable, swipe disable */
 				TOUCH_I("LPWG_NONE & swipe disable - DeepSleep\n");
 				sw42000_sleep_ctrl(dev, IC_DEEP_SLEEP);
@@ -2025,12 +2056,16 @@ static int sw42000_lpwg_mode(struct device *dev)
 				sw42000_swipe_enable(dev, true);
 				sw42000_tc_driving(dev, LCD_MODE_U0);
 				if (d->lpwg_abs.enable) {
-					TOUCH_I("%s: enable lpwg_abs\n", __func__);
-					sw42000_lpwg_abs_enable(dev, d->lpwg_abs.enable);
+					TOUCH_I("%s: enable lpwg_abs\n",
+						__func__);
+					sw42000_lpwg_abs_enable(
+						dev, d->lpwg_abs.enable);
 				}
 				if (d->ai_pick.enable) {
-					TOUCH_I("%s: enable ai pick\n", __func__);
-					sw42000_ai_pick_enable(dev, d->ai_pick.enable);
+					TOUCH_I("%s: enable ai pick\n",
+						__func__);
+					sw42000_ai_pick_enable(
+						dev, d->ai_pick.enable);
 				}
 #if defined(__SUPPORT_LONGPRESS)
 				sw42000_longpress_enable(dev, true);
@@ -2053,10 +2088,12 @@ static int sw42000_lpwg_mode(struct device *dev)
 		else
 			ret = sw42000_tc_driving(dev, LCD_MODE_U3);
 	} else if (ts->lpwg.sensor == PROX_NEAR) {
-		TOUCH_I("%s %d line - wake up on screen off and prox\n", __func__, __LINE__);
+		TOUCH_I("%s %d line - wake up on screen off and prox\n",
+			__func__, __LINE__);
 		sw42000_sleep_ctrl(dev, IC_DEEP_SLEEP);
 	} else if (ts->lpwg.qcover == HALL_NEAR) {
-		TOUCH_I("%s %d line - wake up on screen off and hall\n", __func__, __LINE__);
+		TOUCH_I("%s %d line - wake up on screen off and hall\n",
+			__func__, __LINE__);
 		sw42000_sleep_ctrl(dev, IC_DEEP_SLEEP);
 	} else {
 		/* partial */
@@ -2090,10 +2127,11 @@ static int sw42000_setup_q_sensitivity(struct device *dev, int enable)
 	d->q_sensitivity = enable; /* 1=enable touch, 0=disable touch */
 
 	ret = sw42000_reg_write(dev, ABT_CMD + COVER_SENSITIVITY,
-			&d->q_sensitivity, sizeof(u32));
+				&d->q_sensitivity, sizeof(u32));
 
 	TOUCH_I("%s : %s(%d)\n", __func__,
-			(d->q_sensitivity) ? "SENSITIVE" : "NORMAL", (d->q_sensitivity));
+		(d->q_sensitivity) ? "SENSITIVE" : "NORMAL",
+		(d->q_sensitivity));
 
 	return ret;
 }
@@ -2111,7 +2149,7 @@ static int sw42000_lpwg(struct device *dev, u32 code, void *param)
 		ts->tci.area.y1 = value[2];
 		ts->tci.area.y2 = value[3];
 		TOUCH_I("LPWG_ACTIVE_AREA: x0[%d], x1[%d], x2[%d], x3[%d]\n",
-				value[0], value[1], value[2], value[3]);
+			value[0], value[1], value[2], value[3]);
 		break;
 
 	case LPWG_TAP_COUNT:
@@ -2126,8 +2164,8 @@ static int sw42000_lpwg(struct device *dev, u32 code, void *param)
 
 	case LPWG_UPDATE_ALL:
 		if ((ts->lpwg.screen == 1 && value[1] == 0 &&
-					ts->lpwg.sensor == PROX_FAR) ||
-				(ts->lpwg.qcover == 1 && value[3] == 0))
+		     ts->lpwg.sensor == PROX_FAR) ||
+		    (ts->lpwg.qcover == 1 && value[3] == 0))
 			sw42000_setup_q_sensitivity(dev, 0);
 		ts->lpwg.mode = value[0];
 		ts->lpwg.screen = value[1];
@@ -2135,10 +2173,10 @@ static int sw42000_lpwg(struct device *dev, u32 code, void *param)
 		ts->lpwg.qcover = value[3];
 
 		TOUCH_I("LPWG_UPDATE_ALL: mode[%s], screen[%s], sensor[%s], qcover[%s]\n",
-				lpwg_mode_strr[ts->lpwg.mode],
-				ts->lpwg.screen ? "ON" : "OFF",
-				ts->lpwg.sensor ? "FAR" : "NEAR",
-				ts->lpwg.qcover ? "CLOSE" : "OPEN");
+			lpwg_mode_strr[ts->lpwg.mode],
+			ts->lpwg.screen ? "ON" : "OFF",
+			ts->lpwg.sensor ? "FAR" : "NEAR",
+			ts->lpwg.qcover ? "CLOSE" : "OPEN");
 
 		ret = sw42000_lpwg_mode(dev);
 		if (ret)
@@ -2181,10 +2219,10 @@ static void sw42000_connect(struct device *dev)
 		return;
 	}
 
-	TOUCH_I("CHARGER_STS addr=%x, val=%d\n",
-			ABT_CMD + SPECIAL_CHARGER_INFO, d->charger);
-	sw42000_reg_write(dev, ABT_CMD + SPECIAL_CHARGER_INFO,
-			&d->charger, sizeof(u32));
+	TOUCH_I("CHARGER_STS addr=%x, val=%d\n", ABT_CMD + SPECIAL_CHARGER_INFO,
+		d->charger);
+	sw42000_reg_write(dev, ABT_CMD + SPECIAL_CHARGER_INFO, &d->charger,
+			  sizeof(u32));
 }
 
 static void sw42000_lcd_mode(struct device *dev, u32 mode)
@@ -2193,7 +2231,8 @@ static void sw42000_lcd_mode(struct device *dev, u32 mode)
 
 	d->prev_lcd_mode = d->lcd_mode;
 	d->lcd_mode = mode;
-	TOUCH_D(TRACE, "lcd_mode: %d (prev: %d)\n", d->lcd_mode, d->prev_lcd_mode);
+	TOUCH_D(TRACE, "lcd_mode: %d (prev: %d)\n", d->lcd_mode,
+		d->prev_lcd_mode);
 }
 
 static int sw42000_check_mode(struct device *dev)
@@ -2238,7 +2277,7 @@ static void sw42000_lcd_event_read_reg(struct device *dev)
 	struct sw42000_data *d = to_sw42000_data(dev);
 	struct touch_core_data *ts = to_touch_core(dev);
 	u32 version_addr = CHIP_INFO + tc_version;
-	u32 rdata[5] = {0};
+	u32 rdata[5] = { 0 };
 
 	sw42000_read_value(dev, TC_IC_STATUS, &rdata[0]);
 
@@ -2248,14 +2287,12 @@ static void sw42000_lcd_event_read_reg(struct device *dev)
 
 	sw42000_read_value(dev, SPR_CHIP_ID, &rdata[3]);
 
-	TOUCH_I(
-			"reg[%x] = 0x%x reg[%x] = 0x%x reg[%x] = 0x%x reg[%x] = 0x%x\n",
-			TC_IC_STATUS, rdata[0], TC_STATUS, rdata[1],
-			version_addr, rdata[2],
-			SPR_CHIP_ID, rdata[3]);
+	TOUCH_I("reg[%x] = 0x%x reg[%x] = 0x%x reg[%x] = 0x%x reg[%x] = 0x%x\n",
+		TC_IC_STATUS, rdata[0], TC_STATUS, rdata[1], version_addr,
+		rdata[2], SPR_CHIP_ID, rdata[3]);
 	TOUCH_I("v%d.%02d\n", (rdata[2] >> 8) & 0xF, rdata[2] & 0xFF);
 }
-#endif	/* __SUPPORT_NOTIFY_LCD_EVENT_REG */
+#endif /* __SUPPORT_NOTIFY_LCD_EVENT_REG */
 
 static int sw42000_usb_status(struct device *dev, u32 mode)
 {
@@ -2315,11 +2352,11 @@ static int sw42000_debug_option(struct device *dev, u32 *data)
 		break;
 	case DEBUG_OPTION_3:
 		TOUCH_I("Debug Info Depth 10 %s\n",
-				enable ? "Enable" : "Disable");
+			enable ? "Enable" : "Disable");
 		break;
 	case DEBUG_OPTION_4:
 		TOUCH_I("TA Simulator mode %s\n",
-				enable ? "Enable" : "Disable");
+			enable ? "Enable" : "Disable");
 		sw42000_connect(dev);
 		break;
 	default:
@@ -2333,9 +2370,9 @@ static int sw42000_debug_option(struct device *dev, u32 *data)
 
 static void sw42000_fb_notify_work_func(struct work_struct *fb_notify_work)
 {
-	struct sw42000_data *d =
-		container_of(to_delayed_work(fb_notify_work),
-				struct sw42000_data, fb_notify_work);
+	struct sw42000_data *d = container_of(to_delayed_work(fb_notify_work),
+					      struct sw42000_data,
+					      fb_notify_work);
 	int ret = 0;
 
 	TOUCH_TRACE();
@@ -2389,14 +2426,14 @@ static int sw42000_notify(struct device *dev, ulong event, void *data)
 		break;
 	case NOTIFY_IME_STATE:
 		TOUCH_I("NOTIFY_IME_STATE!\n");
-		ret = sw42000_reg_write(dev, ABT_CMD +
-				SPECIAL_IME_STATUS, (u32 *)data, sizeof(u32));
+		ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_IME_STATUS,
+					(u32 *)data, sizeof(u32));
 		break;
 	case NOTIFY_CALL_STATE:
 		TOUCH_I("NOTIFY_CALL_STATE!\n");
 #if defined(__SUPPORT_NOTIFY_CALL)
-		ret = sw42000_reg_write(dev, ABT_CMD +
-				SPECIAL_CALL_INFO, (u32 *)data, sizeof(u32));
+		ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_CALL_INFO,
+					(u32 *)data, sizeof(u32));
 #endif
 		break;
 	case NOTIFY_DEBUG_TOOL:
@@ -2410,8 +2447,8 @@ static int sw42000_notify(struct device *dev, ulong event, void *data)
 		break;
 	case NOTIFY_FILM_STATE:
 		TOUCH_I("NOTIFY_FILM_STATE\n");
-		ret = sw42000_reg_write(dev, ABT_CMD +
-				SPECIAL_SENSITIVE_INFO, (u32 *)data, sizeof(u32));
+		ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_SENSITIVE_INFO,
+					(u32 *)data, sizeof(u32));
 		break;
 	default:
 		TOUCH_E("%lu is not supported\n", event);
@@ -2510,9 +2547,8 @@ static int sw42000_probe(struct device *dev)
 	sw42000_init_locks(d);
 
 	boot_mode = touch_check_boot_mode(dev);
-	if (boot_mode == TOUCH_CHARGER_MODE
-			|| boot_mode == TOUCH_LAF_MODE
-			|| boot_mode == TOUCH_RECOVERY_MODE) {
+	if (boot_mode == TOUCH_CHARGER_MODE || boot_mode == TOUCH_LAF_MODE ||
+	    boot_mode == TOUCH_RECOVERY_MODE) {
 		TOUCH_I("%s: boot_mode = %d\n", __func__, boot_mode);
 		touch_gpio_init(ts->reset_pin, "touch_reset");
 		touch_gpio_direction_output(ts->reset_pin, 1);
@@ -2530,8 +2566,9 @@ static int sw42000_probe(struct device *dev)
 	sw42000_get_longpress_info(dev);
 #endif
 
-	pm_qos_add_request(&d->pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
-			PM_QOS_DEFAULT_VALUE);
+	// pm_qos_add_request(&d->pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
+	// 		PM_QOS_DEFAULT_VALUE);
+	cpu_latency_qos_add_request(&d->pm_qos_req, PM_QOS_DEFAULT_VALUE);
 
 	d->lcd_mode = LCD_MODE_U3;
 	d->lpwg_failreason_ctrl = LPWG_FAILREASON_ENABLE;
@@ -2576,7 +2613,8 @@ static int sw42000_shutdown(struct device *dev)
 
 	TOUCH_TRACE();
 
-	pm_qos_remove_request(&d->pm_qos_req);
+	// pm_qos_remove_request(&d->pm_qos_req);
+	cpu_latency_qos_remove_request(&d->pm_qos_req);
 
 	return 0;
 }
@@ -2595,13 +2633,13 @@ static int sw42000_fw_compare(struct device *dev, const struct firmware *fw)
 	u32 bin_pid_offset = *((u32 *)&fw->data[BIN_PID_OFFSET_POS]);
 	struct sw42000_version *device = &d->ic_info.version;
 	struct sw42000_version_bin *binary = NULL;
-	char pid[12] = {0};
+	char pid[12] = { 0 };
 	int update = 0;
 	int flash_fw_size = d->p_param.flash_fw_size;
 	u32 bootmode = 0;
 
 	if ((bin_ver_offset > flash_fw_size) ||
-			(bin_pid_offset > flash_fw_size)) {
+	    (bin_pid_offset > flash_fw_size)) {
 		TOUCH_I("%s : invalid offset\n", __func__);
 		return -EINVAL;
 	}
@@ -2613,15 +2651,18 @@ static int sw42000_fw_compare(struct device *dev, const struct firmware *fw)
 	sw42000_ic_boot_check(dev, &bootmode);
 
 	if (!bootmode) {
-		TOUCH_E("%s, FW Boot Fail, need to force FW upgrade\n", __func__);
+		TOUCH_E("%s, FW Boot Fail, need to force FW upgrade\n",
+			__func__);
 		ts->force_fwup = 1;
 	}
 
-	if ((ts->force_fwup) || (binary->major != device->major) || (binary->minor != device->minor))
+	if ((ts->force_fwup) || (binary->major != device->major) ||
+	    (binary->minor != device->minor))
 		update = 1;
 
 	TOUCH_I("bin-ver: %d.%02d (%s), dev-ver: %d.%02d -> update: %d, force_fwup: %d\n",
-			binary->major, binary->minor, pid, device->major, device->minor, update, ts->force_fwup);
+		binary->major, binary->minor, pid, device->major, device->minor,
+		update, ts->force_fwup);
 
 	return update;
 }
@@ -2631,9 +2672,9 @@ enum {
 	NOT_COND,
 };
 
-static int sw42000_condition_wait(struct device *dev,
-		u16 addr, u32 *value, u32 expect,
-		u32 mask, u32 delay, u32 retry, int not_cond)
+static int sw42000_condition_wait(struct device *dev, u16 addr, u32 *value,
+				  u32 expect, u32 mask, u32 delay, u32 retry,
+				  int not_cond)
 {
 	u32 data = 0;
 	int match = 0;
@@ -2643,17 +2684,18 @@ static int sw42000_condition_wait(struct device *dev,
 		touch_msleep(delay);
 		ret = sw42000_read_value(dev, addr, &data);
 		if (ret >= 0) {
-			match = (not_cond == NOT_COND) ? !!((data & mask) != expect) : !!((data & mask) == expect);
+			match = (not_cond == NOT_COND) ?
+					!!((data & mask) != expect) :
+					      !!((data & mask) == expect);
 
 			if (match) {
 				if (value)
 					*value = data;
 
-				TOUCH_I(
-						"%d, addr[%04x] data[%08x], mask[%08x], expect[%s%08x]\n",
-						retry, addr, data, mask,
-						(not_cond == NOT_COND) ? "not " : "",
-						expect);
+				TOUCH_I("%d, addr[%04x] data[%08x], mask[%08x], expect[%s%08x]\n",
+					retry, addr, data, mask,
+					(not_cond == NOT_COND) ? "not " : "",
+					expect);
 				return 0;
 			}
 		}
@@ -2663,9 +2705,8 @@ static int sw42000_condition_wait(struct device *dev,
 		*value = data;
 
 	TOUCH_I("%s addr[%04Xh], expect[%s%08Xh], mask[%08Xh], data[%08Xh]\n",
-			__func__, addr,
-			(not_cond == NOT_COND) ? "not " : "",
-			expect, mask, data);
+		__func__, addr, (not_cond == NOT_COND) ? "not " : "", expect,
+		mask, data);
 
 	return -EPERM;
 }
@@ -2679,22 +2720,27 @@ static int sw42000_fw_verify_cfg(char *buf)
 		return -EFAULT;
 	}
 
-#if	(CFG_C_SIZE != 0)
+#if (CFG_C_SIZE != 0)
 	if (head->c_size.b.common_size != CFG_C_SIZE) {
-		TOUCH_E("fw verify: invalid c_cfg size, %04Xh\n", head->c_size.b.common_size);
+		TOUCH_E("fw verify: invalid c_cfg size, %04Xh\n",
+			head->c_size.b.common_size);
 		return -EFAULT;
 	}
 #endif
 
 	if (head->c_size.b.specific_size != CFG_S_SIZE) {
-		TOUCH_E("fw verify: invalid s_cfg size, %04Xh\n", head->c_size.b.specific_size);
+		TOUCH_E("fw verify: invalid s_cfg size, %04Xh\n",
+			head->c_size.b.specific_size);
 		return -EFAULT;
 	}
 
-	TOUCH_D(FW_UPGRADE, "fw verify: magic_code  : %08Xh\n", head->magic_code);
+	TOUCH_D(FW_UPGRADE, "fw verify: magic_code  : %08Xh\n",
+		head->magic_code);
 	TOUCH_D(FW_UPGRADE, "fw verify: chip ID     : %d\n", head->chip_id);
-	TOUCH_D(FW_UPGRADE, "fw verify: c_cfg size  : %04X\n", head->c_size.b.common_size);
-	TOUCH_D(FW_UPGRADE, "fw verify: s_cfg size  : %04X\n", head->c_size.b.specific_size);
+	TOUCH_D(FW_UPGRADE, "fw verify: c_cfg size  : %04X\n",
+		head->c_size.b.common_size);
+	TOUCH_D(FW_UPGRADE, "fw verify: s_cfg size  : %04X\n",
+		head->c_size.b.specific_size);
 
 	return 0;
 }
@@ -2710,11 +2756,16 @@ static int sw42000_fw_verify_s_cfg(char *buf, int index)
 		return -EFAULT;
 	}
 
-	TOUCH_D(FW_UPGRADE, "fw verify: s-chip_rev  : %d\n", s_head->info_1.b.chip_rev);
-	TOUCH_D(FW_UPGRADE, "fw verify: s-model_id  : %d\n", s_head->info_1.b.model_id);
-	TOUCH_D(FW_UPGRADE, "fw verify: s-lcm_id    : %d\n", s_head->info_1.b.lcm_id);
-	TOUCH_D(FW_UPGRADE, "fw verify: s-fpc_id    : %d\n", s_head->info_1.b.fpc_id);
-	TOUCH_D(FW_UPGRADE, "fw verify: s-lot_id    : %d\n", s_head->info_2.b.lot_id);
+	TOUCH_D(FW_UPGRADE, "fw verify: s-chip_rev  : %d\n",
+		s_head->info_1.b.chip_rev);
+	TOUCH_D(FW_UPGRADE, "fw verify: s-model_id  : %d\n",
+		s_head->info_1.b.model_id);
+	TOUCH_D(FW_UPGRADE, "fw verify: s-lcm_id    : %d\n",
+		s_head->info_1.b.lcm_id);
+	TOUCH_D(FW_UPGRADE, "fw verify: s-fpc_id    : %d\n",
+		s_head->info_1.b.fpc_id);
+	TOUCH_D(FW_UPGRADE, "fw verify: s-lot_id    : %d\n",
+		s_head->info_2.b.lot_id);
 
 	return 0;
 }
@@ -2736,30 +2787,31 @@ static int sw42000_fw_binary_verify(struct device *dev, u8 *fw_buf, int fw_size)
 
 	if (fw_size < flash_fw_size) {
 		TOUCH_E("fw verify: too small img size(%Xh), must be >= flash_fw_size(%Xh)\n",
-				fw_size, flash_fw_size);
+			fw_size, flash_fw_size);
 		return E_FW_CODE_SIZE_ERR;
 	}
 
-	TOUCH_I("fw verify: code size %Xh, code crc %Xh\n",
-			fw_code_size, fw_code_crc);
+	TOUCH_I("fw verify: code size %Xh, code crc %Xh\n", fw_code_size,
+		fw_code_crc);
 
 	if (fw_code_size >= flash_fw_size) {
 		TOUCH_E("fw verify: invalid code_size(%Xh), must be < flash_fw_size(%Xh)\n",
-				fw_code_size, flash_fw_size);
+			fw_code_size, flash_fw_size);
 		return E_FW_CODE_SIZE_ERR;
 	}
 
 	cfg_offset = *(u32 *)&fw_buf[BIN_CFG_OFFSET_POS];
 	cfg_pos = *(u32 *)&fw_buf[cfg_offset];
-	TOUCH_I("fw verify: cfg pos %Xh, cfg offset %xh\n", cfg_pos, cfg_offset);
+	TOUCH_I("fw verify: cfg pos %Xh, cfg offset %xh\n", cfg_pos,
+		cfg_offset);
 	if (cfg_pos >= fw_size) {
 		TOUCH_E("fw verify: invalid cfg_pos(%Xh), must be < img size(%Xh)\n",
-				cfg_pos, fw_size);
+			cfg_pos, fw_size);
 		return E_FW_CODE_CFG_ERR;
 	}
 	if (cfg_pos >= FLASH_SIZE) {
 		TOUCH_E("fw verify: invalid cfg_pos(%Xh), must be < SIZEOF_FLASH\n",
-				cfg_pos);
+			cfg_pos);
 		return E_FW_CODE_CFG_ERR;
 	}
 
@@ -2779,7 +2831,8 @@ static int sw42000_fw_binary_verify(struct device *dev, u8 *fw_buf, int fw_size)
 	}
 
 	s_cfg_base = cfg_base + head->c_size.b.common_size;
-	s_cfg_cnt = ((fw_size - flash_fw_size) - head->c_size.b.common_size)>>CHIP_POW_S_CONF;
+	s_cfg_cnt = ((fw_size - flash_fw_size) - head->c_size.b.common_size) >>
+		    CHIP_POW_S_CONF;
 	for (i = 0; i < s_cfg_cnt; i++) {
 		ret = sw42000_fw_verify_s_cfg((char *)s_cfg_base, i);
 		if (ret < 0) {
@@ -2800,7 +2853,7 @@ static int __used sw42000_fw_flash_mass_erase(struct device *dev)
 	u32 spi_flash_status = SPI_FLASH_STATUS;
 	int fc_err = 0;
 	int busy_time = FC_ERASE_WAIT_TIME;
-	int busy_cnt = (FLASH_PAGE_SIZE<<1)/busy_time;
+	int busy_cnt = (FLASH_PAGE_SIZE << 1) / busy_time;
 	u32 chk_resp, data;
 	int ret = 0;
 
@@ -2823,8 +2876,8 @@ static int __used sw42000_fw_flash_mass_erase(struct device *dev)
 	}
 
 	chk_resp = 1;
-	ret = sw42000_condition_wait(dev, spi_flash_status, &data,
-			chk_resp, ~0, busy_time, busy_cnt, NOT_COND);
+	ret = sw42000_condition_wait(dev, spi_flash_status, &data, chk_resp, ~0,
+				     busy_time, busy_cnt, NOT_COND);
 	if (ret < 0) {
 		fc_err = 4;
 		TOUCH_E("flash erase wait(%Xh) failed, %Xh\n", chk_resp, data);
@@ -2837,8 +2890,7 @@ out:
 	sw42000_write_value(dev, fc_ctrl, 0);
 
 	if (fc_err) {
-		TOUCH_E("flash mass erase error, %d, %d\n",
-				fc_err, ret);
+		TOUCH_E("flash mass erase error, %d, %d\n", fc_err, ret);
 	} else {
 		TOUCH_I("flash mass erase done\n");
 	}
@@ -2860,7 +2912,7 @@ static int __used sw42000_fw_flash_page_erase(struct device *dev)
 	u32 chk_resp, data;
 	int ret = 0;
 
-	for (i = 0; i < (FLASH_SIZE/FLASH_PAGE_SIZE); i++) {
+	for (i = 0; i < (FLASH_SIZE / FLASH_PAGE_SIZE); i++) {
 		ret = sw42000_write_value(dev, fc_addr, addr);
 		if (ret < 0) {
 			fc_err = 1;
@@ -2881,11 +2933,12 @@ static int __used sw42000_fw_flash_page_erase(struct device *dev)
 
 		chk_resp = 1;
 		ret = sw42000_condition_wait(dev, spi_flash_status, &data,
-				chk_resp, ~0, busy_time, busy_cnt, NOT_COND);
+					     chk_resp, ~0, busy_time, busy_cnt,
+					     NOT_COND);
 		if (ret < 0) {
 			fc_err = 4;
 			TOUCH_E("flash page erase wait(%Xh) failed, %Xh\n",
-					chk_resp, data);
+				chk_resp, data);
 			break;
 		}
 
@@ -2899,7 +2952,7 @@ static int __used sw42000_fw_flash_page_erase(struct device *dev)
 
 	if (fc_err) {
 		TOUCH_E("flash page erase error failed on %Xh, %d, %d\n",
-				fc_addr, fc_err, ret);
+			fc_addr, fc_err, ret);
 	} else {
 		TOUCH_I("flash page erase done\n");
 	}
@@ -2907,7 +2960,8 @@ static int __used sw42000_fw_flash_page_erase(struct device *dev)
 	return ret;
 }
 
-static int __used sw42000_fw_flash_write(struct device *dev, int addr, u8 *dn_buf, int dn_size)
+static int __used sw42000_fw_flash_write(struct device *dev, int addr,
+					 u8 *dn_buf, int dn_size)
 {
 	u32 fc_offset = serial_data_offset;
 	u32 fc_code_access = data_access_addr;
@@ -2918,15 +2972,15 @@ static int __used sw42000_fw_flash_write(struct device *dev, int addr, u8 *dn_bu
 
 	ret = sw42000_write_value(dev, fc_offset, addr);
 	if (ret < 0) {
-		TOUCH_E("flash write addr failed, %Xh(%X), %d\n",
-				addr, dn_size, ret);
+		TOUCH_E("flash write addr failed, %Xh(%X), %d\n", addr, dn_size,
+			ret);
 		goto out;
 	}
 
 	ret = sw42000_reg_write(dev, fc_code_access, dn_buf, dn_size);
 	if (ret < 0) {
-		TOUCH_E("flash write data failed, %Xh(%X), %d\n",
-				addr, dn_size, ret);
+		TOUCH_E("flash write data failed, %Xh(%X), %d\n", addr, dn_size,
+			ret);
 		goto out;
 	}
 
@@ -2950,32 +3004,32 @@ static int __used sw42000_fw_flash_crc(struct device *dev, u32 *crc_val)
 	ret = sw42000_write_value(dev, gdma_saddr, 0);
 	if (ret < 0) {
 		TOUCH_E("crc GDMA_SADDR(%04Xh) set zero failed, %d\n",
-				gdma_saddr, ret);
+			gdma_saddr, ret);
 		goto out;
 	}
 
-	ctrl_data = (FLASH_SIZE>>2) - 1;
+	ctrl_data = (FLASH_SIZE >> 2) - 1;
 	ctrl_data |= GDMA_CTL_GDMA_EN | GDMA_CTL_READONLY_EN;
 	ret = sw42000_write_value(dev, gdma_ctl, ctrl_data);
 	if (ret < 0) {
 		TOUCH_E("crc GDMA_CTL(%04Xh) write %08Xh failed, %d\n",
-				gdma_ctl, ctrl_data, ret);
+			gdma_ctl, ctrl_data, ret);
 		goto out;
 	}
 	touch_msleep(10);
 
 	ret = sw42000_write_value(dev, gdma_start, 1);
 	if (ret < 0) {
-		TOUCH_E("crc GDMA_START(%04Xh) on failed, %d\n",
-				gdma_start, ret);
+		TOUCH_E("crc GDMA_START(%04Xh) on failed, %d\n", gdma_start,
+			ret);
 		goto out;
 	}
 	touch_msleep(10);
 
 	ret = sw42000_read_value(dev, gdma_crc_result, &data);
 	if (ret < 0) {
-		TOUCH_E("read crc_result(%04Xh) failed, %d\n",
-				gdma_crc_result, ret);
+		TOUCH_E("read crc_result(%04Xh) failed, %d\n", gdma_crc_result,
+			ret);
 		goto out;
 	}
 
@@ -2986,8 +3040,8 @@ static int __used sw42000_fw_flash_crc(struct device *dev, u32 *crc_val)
 
 	ret = sw42000_read_value(dev, gdma_crc_pass, &data);
 	if (ret < 0) {
-		TOUCH_E("read crc_pass(%04Xh) failed, %d\n",
-				gdma_crc_pass, ret);
+		TOUCH_E("read crc_pass(%04Xh) failed, %d\n", gdma_crc_pass,
+			ret);
 		goto out;
 	}
 
@@ -2999,12 +3053,14 @@ out:
 	return ret;
 }
 
-#define LOG_SZ	64
+#define LOG_SZ 64
 
 static int sw42000_fw_rst_ctl(struct device *dev, int val, const char *str)
 {
 	u32 rst_ctl = spr_rst_ctl;
-	char log[LOG_SZ] = { 0, };
+	char log[LOG_SZ] = {
+		0,
+	};
 	char *name = NULL;
 	int ret = 0;
 
@@ -3064,7 +3120,8 @@ static int sw42000_fw_upgrade_code(struct device *dev, u8 *dn_buf, int dn_size)
 	write_cnt = dn_size / BDMA_TRANS_SIZE;
 	remain_size = dn_size % BDMA_TRANS_SIZE;
 
-	if (dn_size == FLASH_CONF_SIZE && dn_buf[0] == 0xCA && dn_buf[1] == 0xCA && dn_buf[2] == 0xCA && dn_buf[3] == 0xCA)
+	if (dn_size == FLASH_CONF_SIZE && dn_buf[0] == 0xCA &&
+	    dn_buf[1] == 0xCA && dn_buf[2] == 0xCA && dn_buf[3] == 0xCA)
 		config = 1;
 
 	for (k = 0; k <= write_cnt; k++) {
@@ -3074,11 +3131,15 @@ static int sw42000_fw_upgrade_code(struct device *dev, u8 *dn_buf, int dn_size)
 			if (remain_size == 0)
 				break;
 
-			sw42000_fw_flash_write(dev, 0, &dn_buf[k*BDMA_TRANS_SIZE], remain_size);
+			sw42000_fw_flash_write(dev, 0,
+					       &dn_buf[k * BDMA_TRANS_SIZE],
+					       remain_size);
 			reg_buf = remain_size / sizeof(u32);
 			reg_buf |= BDMA_CTL_BDMA_EN;
 		} else {
-			sw42000_fw_flash_write(dev, 0, &dn_buf[k*BDMA_TRANS_SIZE], BDMA_TRANS_SIZE);
+			sw42000_fw_flash_write(dev, 0,
+					       &dn_buf[k * BDMA_TRANS_SIZE],
+					       BDMA_TRANS_SIZE);
 			reg_buf = BDMA_TRANS_SIZE / sizeof(u32);
 			reg_buf |= BDMA_CTL_BDMA_EN;
 		}
@@ -3089,7 +3150,8 @@ static int sw42000_fw_upgrade_code(struct device *dev, u8 *dn_buf, int dn_size)
 		if (config)
 			sw42000_write_value(dev, BDMA_DADDR, 0x1FC00);
 		else
-			sw42000_write_value(dev, BDMA_DADDR, (BDMA_TRANS_SIZE * k));
+			sw42000_write_value(dev, BDMA_DADDR,
+					    (BDMA_TRANS_SIZE * k));
 
 		sw42000_write_value(dev, FC_CTRL, 0x4);
 		sw42000_write_value(dev, BDMA_START, 1);
@@ -3100,11 +3162,12 @@ static int sw42000_fw_upgrade_code(struct device *dev, u8 *dn_buf, int dn_size)
 			busycheck_cnt++;
 			if (busycheck_cnt > 2000) {
 				TOUCH_E("Busy count of BDMA is over.. Num:%d, Count:%d\n",
-						k, busycheck_cnt);
+					k, busycheck_cnt);
 				return 0;
 			}
 		} while ((reg_buf & BDMA_STS_TR_BUSY));
-		TOUCH_I("BDMA is not busy.. Num:%d, Count:%d\n", k, busycheck_cnt);
+		TOUCH_I("BDMA is not busy.. Num:%d, Count:%d\n", k,
+			busycheck_cnt);
 	}
 
 	sw42000_write_value(dev, fc_ctrl, 0);
@@ -3114,20 +3177,28 @@ static int sw42000_fw_upgrade_code(struct device *dev, u8 *dn_buf, int dn_size)
 
 int specific_header_verify(unsigned char *header, int i)
 {
-	CFG_S_HEADER_CONTROL_TypeDef *head = (CFG_S_HEADER_CONTROL_TypeDef *)header;
+	CFG_S_HEADER_CONTROL_TypeDef *head =
+		(CFG_S_HEADER_CONTROL_TypeDef *)header;
 
-	if (head->cfg_specific_info1.b.chip_rev <= 0
-			&& head->cfg_specific_info1.b.chip_rev > 10) {
-		TOUCH_I("Invalid Chip revision id. %8.8X\n", head->cfg_specific_info1.b.chip_rev);
+	if (head->cfg_specific_info1.b.chip_rev <= 0 &&
+	    head->cfg_specific_info1.b.chip_rev > 10) {
+		TOUCH_I("Invalid Chip revision id. %8.8X\n",
+			head->cfg_specific_info1.b.chip_rev);
 		return -2;
 	}
 
-	TOUCH_I("====================== SPECIFIC #%d ===========================\n", i+1);
-	TOUCH_I("chip_rev				: %d\n", head->cfg_specific_info1.b.chip_rev);
-	TOUCH_I("fpcb_id				: %d\n", head->cfg_specific_info2.b.fpcb_id);
-	TOUCH_I("lcm_id				: %d\n", head->cfg_specific_info2.b.lcm_id);
-	TOUCH_I("model_id				: %d\n", head->cfg_specific_info1.b.model_id);
-	TOUCH_I("lot_id				: %d\n", head->cfg_specific_info2.b.lot_id);
+	TOUCH_I("====================== SPECIFIC #%d ===========================\n",
+		i + 1);
+	TOUCH_I("chip_rev				: %d\n",
+		head->cfg_specific_info1.b.chip_rev);
+	TOUCH_I("fpcb_id				: %d\n",
+		head->cfg_specific_info2.b.fpcb_id);
+	TOUCH_I("lcm_id				: %d\n",
+		head->cfg_specific_info2.b.lcm_id);
+	TOUCH_I("model_id				: %d\n",
+		head->cfg_specific_info1.b.model_id);
+	TOUCH_I("lot_id				: %d\n",
+		head->cfg_specific_info2.b.lot_id);
 	TOUCH_I("===============================================================\n");
 
 	return 1;
@@ -3145,28 +3216,36 @@ static int sw42000_fw_upgrade_conf(struct device *dev, u8 *pFirm, u32 nSize)
 	cfg_size = head->cfg_size.b.specific_cfg_size;
 
 	if (sw42000_reg_read(dev, CHIP_INFO, (u8 *)&d->chip_info,
-				sizeof(struct sw42000_chip_info)) < 0) {
+			     sizeof(struct sw42000_chip_info)) < 0) {
 		TOUCH_E("Chip info Read Error\n");
 	}
 
-	if ((d->chip_info.r_conf_dn_index == 0)
-			|| ((d->chip_info.r_conf_dn_index * cfg_size) > (nSize - flash_fw_size))) {
-		TOUCH_I("Invalid Specific CFG Index => 0x%8.8X\n", d->chip_info.r_conf_dn_index);
+	if ((d->chip_info.r_conf_dn_index == 0) ||
+	    ((d->chip_info.r_conf_dn_index * cfg_size) >
+	     (nSize - flash_fw_size))) {
+		TOUCH_I("Invalid Specific CFG Index => 0x%8.8X\n",
+			d->chip_info.r_conf_dn_index);
 	} else {
-		TOUCH_I("Specific CFG Index => 0x%8.8X\n", d->chip_info.r_conf_dn_index);
+		TOUCH_I("Specific CFG Index => 0x%8.8X\n",
+			d->chip_info.r_conf_dn_index);
 	}
 
 	if (d->chip_info.r_conf_dn_index > 1)
 		memcpy((void *)&pFirm[flash_fw_size],
-				(void *)&pFirm[flash_fw_size + (d->chip_info.r_conf_dn_index - 1)*cfg_size], cfg_size);
+		       (void *)&pFirm[flash_fw_size +
+				      (d->chip_info.r_conf_dn_index - 1) *
+					      cfg_size],
+		       cfg_size);
 
 	sw42000_fw_upgrade_code(dev, &pFirm[flash_fw_size], cfg_size);
 	touch_msleep(100);
 
 	TOUCH_I("========== CFG Specific Header Info ========\n");
-	specific_header_verify(&pFirm[flash_fw_size], d->chip_info.r_conf_dn_index - 1);
+	specific_header_verify(&pFirm[flash_fw_size],
+			       d->chip_info.r_conf_dn_index - 1);
 	TOUCH_I("CFG Specific CRC READ :%X(Hex)\n",
-			*((u32 *)&pFirm[flash_fw_size + (d->chip_info.r_conf_dn_index)*cfg_size - 4]));
+		*((u32 *)&pFirm[flash_fw_size +
+				(d->chip_info.r_conf_dn_index) * cfg_size - 4]));
 
 	return ret;
 }
@@ -3189,8 +3268,8 @@ static int sw42000_fw_upgrade_post(struct device *dev)
 	}
 
 	if (crc_val != CRC_FIXED_VALUE) {
-		TOUCH_E("flash crc error %08Xh != %08Xh, %d\n",
-				CRC_FIXED_VALUE, crc_val, ret);
+		TOUCH_E("flash crc error %08Xh != %08Xh, %d\n", CRC_FIXED_VALUE,
+			crc_val, ret);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -3219,11 +3298,10 @@ out:
 /*
  *	F/W upgrade Flash Direct Access for sw42000
  */
-static int sw42000_fw_upgrade(struct device *dev,
-		const struct firmware *fw)
+static int sw42000_fw_upgrade(struct device *dev, const struct firmware *fw)
 {
 	struct sw42000_data *d = to_sw42000_data(dev);
-	u8 *fwdata = (u8 *) fw->data;
+	u8 *fwdata = (u8 *)fw->data;
 	int ret;
 	int img_check_result;
 	int flash_fw_size = d->p_param.flash_fw_size;
@@ -3232,14 +3310,15 @@ static int sw42000_fw_upgrade(struct device *dev,
 
 	if (fw->size > MAX_FLASH_SIZE) {
 		TOUCH_E("Image Size invalid : %d. The Size must be less then 137KB. The Process of Firmware Download could not process!\n",
-				(unsigned int)fw->size);
+			(unsigned int)fw->size);
 		return -EPERM;
 	}
 
-	TOUCH_I("Image Size : 0x%8.8X(%d)\n",
-			(unsigned int)fw->size, (unsigned int)fw->size);
+	TOUCH_I("Image Size : 0x%8.8X(%d)\n", (unsigned int)fw->size,
+		(unsigned int)fw->size);
 
-	img_check_result = sw42000_fw_binary_verify(dev, (unsigned char *)fwdata, fw->size);
+	img_check_result = sw42000_fw_binary_verify(
+		dev, (unsigned char *)fwdata, fw->size);
 	switch (img_check_result) {
 	case E_FW_CODE_AND_CFG_VALID:
 		break;
@@ -3270,8 +3349,7 @@ static int sw42000_fw_upgrade(struct device *dev,
 	touch_msleep(200);
 
 	ret = sw42000_condition_wait(dev, fw_boot_code_addr, NULL,
-			FW_BOOT_LOADER_CODE, ~0,
-			10, 20, EQ_COND);
+				     FW_BOOT_LOADER_CODE, ~0, 10, 20, EQ_COND);
 	if (ret < 0) {
 		TOUCH_E("failed : \'boot check\'\n");
 		return -EPERM;
@@ -3281,17 +3359,15 @@ static int sw42000_fw_upgrade(struct device *dev,
 
 	sw42000_write_value(dev, SYS_RST_CTL, 2);
 
-	sw42000_read_value(dev, CHIP_INFO + 4,
-			&d->chip_info.r_conf_dn_index);
+	sw42000_read_value(dev, CHIP_INFO + 4, &d->chip_info.r_conf_dn_index);
 	TOUCH_I("conf_dn_index %d\n", d->chip_info.r_conf_dn_index);
 
 	if (d->chip_info.r_conf_dn_index == 0 ||
-			d->chip_info.r_conf_dn_index > 20) {
+	    d->chip_info.r_conf_dn_index > 20) {
 		TOUCH_E("CFG_S_INDEX(%d) invalid\n",
-				d->chip_info.r_conf_dn_index);
+			d->chip_info.r_conf_dn_index);
 		return -EPERM;
 	}
-
 
 	TOUCH_I("[CFG update]\n");
 	ret = sw42000_fw_upgrade_conf(dev, fwdata, fw->size);
@@ -3313,7 +3389,7 @@ static int sw42000_upgrade(struct device *dev)
 	struct sw42000_data *d = to_sw42000_data(dev);
 	struct project_param *param = &d->p_param;
 	const struct firmware *fw = NULL;
-	char fwpath[256] = {0};
+	char fwpath[256] = { 0 };
 	u32 data = 0;
 	int ret = 0;
 	int i = 0;
@@ -3325,7 +3401,8 @@ static int sw42000_upgrade(struct device *dev)
 
 	if (ts->test_fwpath[0]) {
 		memcpy(fwpath, &ts->test_fwpath[0], sizeof(fwpath));
-		TOUCH_I("get fwpath from test_fwpath:%s\n", &ts->test_fwpath[0]);
+		TOUCH_I("get fwpath from test_fwpath:%s\n",
+			&ts->test_fwpath[0]);
 	} else if (ts->def_fwcnt) {
 		memcpy(fwpath, ts->def_fwpath[0], sizeof(fwpath));
 		TOUCH_I("get fwpath from def_fwpath : %s\n", fwpath);
@@ -3347,7 +3424,7 @@ static int sw42000_upgrade(struct device *dev)
 
 	if (ret < 0) {
 		TOUCH_E("fail to request_firmware fwpath: %s (ret:%d)\n",
-				fwpath, ret);
+			fwpath, ret);
 
 		return ret;
 	}
@@ -3360,16 +3437,21 @@ static int sw42000_upgrade(struct device *dev)
 		for (i = 0; i < 2 && ret; i++) {
 			if (param->wa_trim_wr) {
 				if (i == 1) {
-					ret = sw42000_read_value(dev, SYS_OSC_CTL, &data);
+					ret = sw42000_read_value(
+						dev, SYS_OSC_CTL, &data);
 					if (ret < 0) {
-						TOUCH_E("bus error in %s\n", __func__);
+						TOUCH_E("bus error in %s\n",
+							__func__);
 						goto error;
 					}
 					data = data & 0x7F;
 					TOUCH_I("SYS_OSC_CTL : %x\n", data);
 					if (data == 4) {
-						TOUCH_I("Write AVERAGE_TRIM_VAL : %x\n", data);
-						sw42000_write_value(dev, SYS_OSC_CTL, AVERAGE_TRIM_VAL);
+						TOUCH_I("Write AVERAGE_TRIM_VAL : %x\n",
+							data);
+						sw42000_write_value(
+							dev, SYS_OSC_CTL,
+							AVERAGE_TRIM_VAL);
 					}
 				}
 			}
@@ -3393,7 +3475,8 @@ static int sw42000_esd_recovery(struct device *dev)
 	TOUCH_TRACE();
 
 #if defined(CONFIG_LGE_TOUCH_CORE_QCT)
-#if IS_ENABLED(CONFIG_LGE_DISPLAY_RECOVERY_ESD) || IS_ENABLED(CONFIG_LGE_TOUCH_PANEL_GLOBAL_RESET)
+#if IS_ENABLED(CONFIG_LGE_DISPLAY_RECOVERY_ESD) || \
+	IS_ENABLED(CONFIG_LGE_TOUCH_PANEL_GLOBAL_RESET)
 	lge_mdss_report_panel_dead();
 #endif
 #endif
@@ -3581,16 +3664,8 @@ out:
 static int sw42000_ic_test(struct device *dev)
 {
 	u32 data[] = {
-		0x5A5A5A5A,
-		0xA5A5A5A5,
-		0xF0F0F0F0,
-		0x0F0F0F0F,
-		0xFF00FF00,
-		0x00FF00FF,
-		0xFFFF0000,
-		0x0000FFFF,
-		0xFFFFFFFF,
-		0x00000000,
+		0x5A5A5A5A, 0xA5A5A5A5, 0xF0F0F0F0, 0x0F0F0F0F, 0xFF00FF00,
+		0x00FF00FF, 0xFFFF0000, 0x0000FFFF, 0xFFFFFFFF, 0x00000000,
 	};
 	int i;
 	int ret = 0;
@@ -3642,11 +3717,13 @@ static int sw42000_init(struct device *dev)
 	if (ret < 0) {
 		TOUCH_E("Failed to get ic info (ret: %d)\n", ret);
 		if (ts->force_fwup == 1) {
-			TOUCH_I("%s : Forcefully trigger f/w Upgrade\n", __func__);
+			TOUCH_I("%s : Forcefully trigger f/w Upgrade\n",
+				__func__);
 			touch_interrupt_control(ts->dev, INTERRUPT_DISABLE);
 			ret = sw42000_upgrade(dev);
 			if (ret < 0) {
-				TOUCH_E("Failed to f/w upgrade (ret: %d)\n", ret);
+				TOUCH_E("Failed to f/w upgrade (ret: %d)\n",
+					ret);
 				return ret;
 			}
 			ts->force_fwup = 0;
@@ -3656,7 +3733,8 @@ static int sw42000_init(struct device *dev)
 			touch_interrupt_control(ts->dev, INTERRUPT_ENABLE);
 			ret = sw42000_ic_info(dev);
 			if (ret < 0) {
-				TOUCH_E("Failed to get ic info (ret: %d)\n", ret);
+				TOUCH_E("Failed to get ic info (ret: %d)\n",
+					ret);
 				return ret;
 			}
 		} else {
@@ -3667,43 +3745,47 @@ static int sw42000_init(struct device *dev)
 
 	/* sw42000 special register should be controlled */
 	if (ts->bus_type == HWIF_I2C) {
-		ret = sw42000_reg_write(dev, SERIAL_SPI_EN, &rdata, sizeof(rdata));
+		ret = sw42000_reg_write(dev, SERIAL_SPI_EN, &rdata,
+					sizeof(rdata));
 		if (ret)
-			TOUCH_E("failed to write \'serial_spi_disable\', ret:%d\n", ret);
+			TOUCH_E("failed to write \'serial_spi_disable\', ret:%d\n",
+				ret);
 		else
 			TOUCH_I("serial_spi_en : %d\n", rdata);
 	} else if (ts->bus_type == HWIF_SPI) {
-		ret = sw42000_reg_write(dev, SERIAL_I2C_EN, &rdata, sizeof(rdata));
+		ret = sw42000_reg_write(dev, SERIAL_I2C_EN, &rdata,
+					sizeof(rdata));
 		if (ret)
-			TOUCH_E("failed to write \'serial_i2c_disable\', ret:%d\n", ret);
+			TOUCH_E("failed to write \'serial_i2c_disable\', ret:%d\n",
+				ret);
 		else
 			TOUCH_I("serial_i2c_en : %d\n", rdata);
 	}
 
-	ret = sw42000_reg_write(dev, TC_CMD +
-			tc_device_ctl, &data, sizeof(data));
+	ret = sw42000_reg_write(dev, TC_CMD + tc_device_ctl, &data,
+				sizeof(data));
 	if (ret)
 		TOUCH_E("failed to write \'tc_device_ctrl\', ret:%d\n", ret);
 
-	ret = sw42000_reg_write(dev, TC_CMD +
-			tc_interrupt_ctl, &data, sizeof(data));
+	ret = sw42000_reg_write(dev, TC_CMD + tc_interrupt_ctl, &data,
+				sizeof(data));
 	if (ret)
 		TOUCH_E("failed to write \'tc_interrupt_ctrl\', ret:%d\n", ret);
 
-	ret = sw42000_reg_write(dev, ABT_CMD +
-			SPECIAL_CHARGER_INFO, &d->charger, sizeof(u32));
+	ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_CHARGER_INFO,
+				&d->charger, sizeof(u32));
 	if (ret)
 		TOUCH_E("failed to write \'spr_charger_sts\', ret:%d\n", ret);
 
 	data = atomic_read(&ts->state.ime);
-	ret = sw42000_reg_write(dev, ABT_CMD +
-			SPECIAL_IME_STATUS, &data, sizeof(data));
+	ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_IME_STATUS, &data,
+				sizeof(data));
 	if (ret)
 		TOUCH_E("failed to write \'reg_ime_state\', ret:%d\n", ret);
 
 	data = atomic_read(&ts->state.film);
-	ret = sw42000_reg_write(dev, ABT_CMD +
-			SPECIAL_SENSITIVE_INFO, &data, sizeof(data));
+	ret = sw42000_reg_write(dev, ABT_CMD + SPECIAL_SENSITIVE_INFO, &data,
+				sizeof(data));
 	if (ret)
 		TOUCH_E("failed to write \'reg_film_state\', ret:%d\n", ret);
 
@@ -3724,11 +3806,13 @@ int sw42000_check_status(struct device *dev)
 	struct sw42000_data *d = to_sw42000_data(dev);
 	int ret = 0;
 	int i = 0, idx = 0;
-	u64 status = (((u64)d->info.ic_status) << 32) | ((u64)d->info.tc_status);
+	u64 status = (((u64)d->info.ic_status) << 32) |
+		     ((u64)d->info.tc_status);
 	u64 status_mask = 0x0;
 
-	TOUCH_D(ABS, "%s : status [0x%016llx] ic_status [0x%08x], tc_status [0x%08x]\n",
-			__func__, (u64)status, d->info.ic_status, d->info.tc_status);
+	TOUCH_D(ABS,
+		"%s : status [0x%016llx] ic_status [0x%08x], tc_status [0x%08x]\n",
+		__func__, (u64)status, d->info.ic_status, d->info.tc_status);
 
 	/* Status Checking */
 	status_mask = status ^ STATUS_NORMAL_MASK;
@@ -3752,8 +3836,8 @@ int sw42000_check_status(struct device *dev)
 		TOUCH_I("%s : Need Touch SW Reset\n", __func__);
 		ret = -ESWRESET;
 	} else if (status_mask & STATUS_FW_UPGRADE_BIT) {
-		TOUCH_I("%s : Need FW Upgrade, err_cnt = %d %s\n",
-				__func__, d->err_cnt, d->err_cnt > 3 ? " skip upgrade":"");
+		TOUCH_I("%s : Need FW Upgrade, err_cnt = %d %s\n", __func__,
+			d->err_cnt, d->err_cnt > 3 ? " skip upgrade" : "");
 		if (d->err_cnt > 3)
 			ret = -ERANGE;
 		else
@@ -3762,7 +3846,6 @@ int sw42000_check_status(struct device *dev)
 	} else if (status_mask & STATUS_LOGGING_BIT) {
 		TOUCH_I("%s : Need Logging\n", __func__);
 		ret = -ERANGE;
-
 	}
 
 	/* Status Logging */
@@ -3772,8 +3855,8 @@ int sw42000_check_status(struct device *dev)
 			if (((status_mask >> 32) & 0xFFFFFFFF) & (1 << idx)) {
 				if (ic_status_info_str[idx] != NULL) {
 					TOUCH_I("[IC_STATUS_INFO][%d]%s, status = %016llx, ic_status = 0x%08x\n",
-							idx, ic_status_info_str[idx],
-							(u64)status, d->info.ic_status);
+						idx, ic_status_info_str[idx],
+						(u64)status, d->info.ic_status);
 				}
 			}
 		}
@@ -3782,8 +3865,8 @@ int sw42000_check_status(struct device *dev)
 			if ((status_mask & 0xFFFFFFFF) & (1 << idx)) {
 				if (tc_status_info_str[idx] != NULL) {
 					TOUCH_I("[TC_STATUS_INFO][%d]%s, status = %016llx, tc_status = 0x%08x\n",
-							idx, tc_status_info_str[idx],
-							(u64)status, d->info.tc_status);
+						idx, tc_status_info_str[idx],
+						(u64)status, d->info.tc_status);
 				}
 			}
 		}
@@ -3816,10 +3899,10 @@ static void sw42000_lpwg_abs_filter(struct device *dev, u8 touch_id)
 	if (press_mask & (1 << touch_id)) {
 		if (hide_lockscreen_coord) {
 			TOUCH_I("%s: <id:%d> shift Y value(xxxx->xxxx)\n",
-					__func__, touch_id);
+				__func__, touch_id);
 		} else {
-			TOUCH_I("%s: <id:%d> shift Y value(%d->%d)\n",
-					__func__, touch_id, old_y, new_y);
+			TOUCH_I("%s: <id:%d> shift Y value(%d->%d)\n", __func__,
+				touch_id, old_y, new_y);
 		}
 	}
 
@@ -3830,14 +3913,9 @@ static void sw42000_noise_log(struct device *dev, int id)
 {
 	struct sw42000_data *d = to_sw42000_data(dev);
 
-	TOUCH_I("Noise_log<%d>(%d,%d,%d,%d,%d,%d)",
-			id,
-			d->info.self_recal,
-			d->info.mutual_recal,
-			d->info.abnormal1_recal,
-			d->info.abnormal2_recal,
-			d->info.current_mode,
-			d->info.rmdiff);
+	TOUCH_I("Noise_log<%d>(%d,%d,%d,%d,%d,%d)", id, d->info.self_recal,
+		d->info.mutual_recal, d->info.abnormal1_recal,
+		d->info.abnormal2_recal, d->info.current_mode, d->info.rmdiff);
 }
 
 int sw42000_irq_abs_data(struct device *dev)
@@ -3872,8 +3950,8 @@ int sw42000_irq_abs_data(struct device *dev)
 		if (data[i].track_id >= MAX_FINGER)
 			continue;
 
-		if (data[i].event == TOUCHSTS_DOWN
-				|| data[i].event == TOUCHSTS_MOVE) {
+		if (data[i].event == TOUCHSTS_DOWN ||
+		    data[i].event == TOUCHSTS_MOVE) {
 			ts->new_mask |= (1 << data[i].track_id);
 			tdata = ts->tdata + data[i].track_id;
 
@@ -3893,22 +3971,17 @@ int sw42000_irq_abs_data(struct device *dev)
 			finger_index++;
 
 			TOUCH_D(ABS,
-					"tdata [id:%d t:%d x:%4d y:%4d z:%3d - %4d,%4d,%3d]\n",
-					tdata->id,
-					tdata->type,
-					tdata->x,
-					tdata->y,
-					tdata->pressure,
-					tdata->width_major,
-					tdata->width_minor,
-					tdata->orientation);
+				"tdata [id:%d t:%d x:%4d y:%4d z:%3d - %4d,%4d,%3d]\n",
+				tdata->id, tdata->type, tdata->x, tdata->y,
+				tdata->pressure, tdata->width_major,
+				tdata->width_minor, tdata->orientation);
 
 			if (d->lpwg_abs.enable)
 				sw42000_lpwg_abs_filter(dev, tdata->id);
 
 			if (d->noise_log == NOISE_ENABLE) {
-				if (ts->old_mask != ts->new_mask
-						&& data[i].event == TOUCHSTS_DOWN) {
+				if (ts->old_mask != ts->new_mask &&
+				    data[i].event == TOUCHSTS_DOWN) {
 					sw42000_noise_log(dev, tdata->id);
 				}
 			}
@@ -3928,8 +4001,8 @@ int sw42000_irq_abs(struct device *dev)
 
 	/* check if touch cnt is valid */
 	if (d->info.touch_cnt == 0 || d->info.touch_cnt > ts->caps.max_id) {
-		TOUCH_I("%s : touch cnt is invalid - %d\n",
-				__func__, d->info.touch_cnt);
+		TOUCH_I("%s : touch cnt is invalid - %d\n", __func__,
+			d->info.touch_cnt);
 		return -ERANGE;
 	}
 
@@ -3943,7 +4016,6 @@ int sw42000_irq_lpwg(struct device *dev)
 	int ret = 0;
 
 	if (d->info.wakeup_type == KNOCK_ON) {
-
 		sw42000_get_tci_data(dev, ts->tci.info[TCI_1].tap_count);
 		ts->intr_status = TOUCH_IRQ_KNOCK;
 
@@ -3953,17 +4025,17 @@ int sw42000_irq_lpwg(struct device *dev)
 				TOUCH_I("%s: send ai_pick event!\n", __func__);
 			} else {
 				if (ts->lpwg.mode == LPWG_PASSWORD_ONLY) {
-					TOUCH_I("%s: ignore knock on event about ai_pick\n", __func__);
+					TOUCH_I("%s: ignore knock on event about ai_pick\n",
+						__func__);
 					ts->intr_status = TOUCH_IRQ_NONE;
 				}
 			}
 		}
 
-
 	} else if (d->info.wakeup_type == KNOCK_CODE) {
 		if (ts->lpwg.mode >= LPWG_PASSWORD) {
 			sw42000_get_tci_data(dev,
-					ts->tci.info[TCI_2].tap_count);
+					     ts->tci.info[TCI_2].tap_count);
 			ts->intr_status = TOUCH_IRQ_PASSWD;
 		}
 	} else if (d->info.wakeup_type == SWIPE_UP) {
@@ -3980,7 +4052,7 @@ int sw42000_irq_lpwg(struct device *dev)
 		ts->intr_status = TOUCH_IRQ_SWIPE_LEFT;
 		if (d->lpwg_abs.enable) {
 			TOUCH_I("%s: lpwg_abs is enabled - skip SWIPE_L gesture\n",
-					__func__);
+				__func__);
 			ts->intr_status = TOUCH_IRQ_NONE;
 		}
 	} else if (d->info.wakeup_type == SWIPE_RIGHT) {
@@ -3989,7 +4061,7 @@ int sw42000_irq_lpwg(struct device *dev)
 		ts->intr_status = TOUCH_IRQ_SWIPE_RIGHT;
 		if (d->lpwg_abs.enable) {
 			TOUCH_I("%s: lpwg_abs is enabled - skip SWIPE_R gesture\n",
-					__func__);
+				__func__);
 			ts->intr_status = TOUCH_IRQ_NONE;
 		}
 	} else if (d->info.wakeup_type == SWIPE_LEFT2) {
@@ -4007,15 +4079,14 @@ int sw42000_irq_lpwg(struct device *dev)
 #endif
 	} else if (d->info.wakeup_type == KNOCK_OVERTAP) {
 		TOUCH_I("LPWG wakeup_type is Overtap\n");
-		sw42000_get_tci_data(dev,
-				ts->tci.info[TCI_2].tap_count + 1);
+		sw42000_get_tci_data(dev, ts->tci.info[TCI_2].tap_count + 1);
 		ts->intr_status = TOUCH_IRQ_PASSWD;
 	} else if (d->info.wakeup_type == CUSTOM_DEBUG) {
 		TOUCH_I("LPWG wakeup_type is CUSTOM_DEBUG\n");
 		sw42000_lpwg_failreason(dev);
 	} else {
 		TOUCH_I("LPWG wakeup_type is not support type![%d]\n",
-				d->info.wakeup_type);
+			d->info.wakeup_type);
 	}
 
 	return ret;
@@ -4027,29 +4098,28 @@ int sw42000_debug_info(struct device *dev)
 	int ret = 0, i = 0;
 	int count = 0;
 
-	ret = sw42000_reg_read(dev, DEBUG_INFO, &d->debug_info, sizeof(d->debug_info));
+	ret = sw42000_reg_read(dev, DEBUG_INFO, &d->debug_info,
+			       sizeof(d->debug_info));
 	if (ret < 0)
 		goto error;
 
 	TOUCH_D(ABS, "%s : debug_info.type: %x, debug_info.length: %x\n",
-			__func__, d->debug_info.type, d->debug_info.length);
+		__func__, d->debug_info.type, d->debug_info.length);
 
 	if (d->debug_info.type < DEBUG_INFO_NUM)
-		TOUCH_E("[DEBUG_TYPE] [%d]%s\n",
-				d->debug_info.type,
-				debug_info_str[d->debug_info.type]);
+		TOUCH_E("[DEBUG_TYPE] [%d]%s\n", d->debug_info.type,
+			debug_info_str[d->debug_info.type]);
 
 	if (d->debug_info.length > 0 && d->debug_info.length <= 12) {
 		count = d->debug_info.length / 4;
 		for (i = 0; i < count; i++) {
-			TOUCH_E("[DEBUG_INFO] Info[%d]: %x\n",
-					2 - i, d->debug_info.info[2 - i]);
+			TOUCH_E("[DEBUG_INFO] Info[%d]: %x\n", 2 - i,
+				d->debug_info.info[2 - i]);
 		}
 	}
 
 error:
 	return ret;
-
 }
 
 int sw42000_irq_handler(struct device *dev)
@@ -4057,7 +4127,8 @@ int sw42000_irq_handler(struct device *dev)
 	struct sw42000_data *d = to_sw42000_data(dev);
 	int ret = 0;
 
-	pm_qos_update_request(&d->pm_qos_req, 10);
+	// pm_qos_update_request(&d->pm_qos_req, 10);
+	cpu_latency_qos_update_request(&d->pm_qos_req, 10);
 	ret = sw42000_reg_read(dev, TC_IC_STATUS, &d->info, sizeof(d->info));
 	if (ret < 0) {
 		TOUCH_E("%s : tc_ic_status read fail\n", __func__);
@@ -4104,16 +4175,17 @@ static ssize_t show_noise_log(struct device *dev, char *buf)
 	TOUCH_TRACE();
 
 	offset += snprintf(buf + offset, PAGE_SIZE - offset, "%d\n",
-				d->noise_log);
+			   d->noise_log);
 
-	TOUCH_I("noise_log = %s\n", (d->noise_log == NOISE_ENABLE)
-			? "NOISE_LOG_ENABLE" : "NOISE_LOG_DISABLE");
+	TOUCH_I("noise_log = %s\n", (d->noise_log == NOISE_ENABLE) ?
+					    "NOISE_LOG_ENABLE" :
+						  "NOISE_LOG_DISABLE");
 
 	return offset;
 }
 
-static ssize_t store_noise_log(struct device *dev,
-		const char *buf, size_t count)
+static ssize_t store_noise_log(struct device *dev, const char *buf,
+			       size_t count)
 {
 	struct sw42000_data *d = to_sw42000_data(dev);
 
@@ -4124,29 +4196,26 @@ static ssize_t store_noise_log(struct device *dev,
 	if (kstrtos32(buf, 10, &value) < 0)
 		return count;
 
-	if ((d->noise_log == NOISE_DISABLE)
-		&& (value == NOISE_ENABLE)) {
+	if ((d->noise_log == NOISE_DISABLE) && (value == NOISE_ENABLE)) {
 		d->noise_log = NOISE_ENABLE;
-	} else if ((d->noise_log == NOISE_ENABLE)
-			&& (value == NOISE_DISABLE)) {
+	} else if ((d->noise_log == NOISE_ENABLE) && (value == NOISE_DISABLE)) {
 		d->noise_log = NOISE_DISABLE;
 	} else {
 		TOUCH_I("Already enabled noise_log\n");
-		TOUCH_I("noise_log = %d, value = %d\n",
-				d->noise_log, value);
+		TOUCH_I("noise_log = %d, value = %d\n", d->noise_log, value);
 		return count;
 	}
 
-	TOUCH_I("noise_log = %s\n", (d->noise_log == NOISE_ENABLE)
-			? "NOISE_LOG_ENABLE" : "NOISE_LOG_DISABLE");
+	TOUCH_I("noise_log = %s\n", (d->noise_log == NOISE_ENABLE) ?
+					    "NOISE_LOG_ENABLE" :
+						  "NOISE_LOG_DISABLE");
 
 	return count;
 }
 
-static ssize_t store_reg_ctrl(struct device *dev,
-		const char *buf, size_t count)
+static ssize_t store_reg_ctrl(struct device *dev, const char *buf, size_t count)
 {
-	char command[6] = {0};
+	char command[6] = { 0 };
 	u32 reg = 0;
 	u32 value = 0;
 	u32 data = 1;
@@ -4181,23 +4250,27 @@ static ssize_t show_lpwg_failreason(struct device *dev, char *buf)
 	int ret = 0;
 	u32 rdata = -1;
 
-	if (sw42000_reg_read(dev, TC_CMD + LPWG_FAILREASON_ON,
-				(u8 *)&rdata, sizeof(rdata)) < 0) {
+	if (sw42000_reg_read(dev, TC_CMD + LPWG_FAILREASON_ON, (u8 *)&rdata,
+			     sizeof(rdata)) < 0) {
 		TOUCH_I("Fail to Read Failreason On Ctrl\n");
 		return ret;
 	}
 
-	ret = snprintf(buf + ret, PAGE_SIZE,
-			"Failreason Ctrl[IC] = %s\n", (rdata & 0x1) ? "Enable" : "Disable");
+	ret = snprintf(buf + ret, PAGE_SIZE, "Failreason Ctrl[IC] = %s\n",
+		       (rdata & 0x1) ? "Enable" : "Disable");
 	ret += snprintf(buf + ret, PAGE_SIZE - ret,
-			"Failreason Ctrl[Driver] = %s\n", d->lpwg_failreason_ctrl ? "Enable" : "Disable");
-	TOUCH_I("Failreason Ctrl[IC] = %s\n", (rdata & 0x1) ? "Enable" : "Disable");
-	TOUCH_I("Failreason Ctrl[Driver] = %s\n", d->lpwg_failreason_ctrl ? "Enable" : "Disable");
+			"Failreason Ctrl[Driver] = %s\n",
+			d->lpwg_failreason_ctrl ? "Enable" : "Disable");
+	TOUCH_I("Failreason Ctrl[IC] = %s\n",
+		(rdata & 0x1) ? "Enable" : "Disable");
+	TOUCH_I("Failreason Ctrl[Driver] = %s\n",
+		d->lpwg_failreason_ctrl ? "Enable" : "Disable");
 
 	return ret;
 }
 
-static ssize_t store_lpwg_failreason(struct device *dev, const char *buf, size_t count)
+static ssize_t store_lpwg_failreason(struct device *dev, const char *buf,
+				     size_t count)
 {
 	struct sw42000_data *d = to_sw42000_data(dev);
 	int value = 0;
@@ -4211,7 +4284,8 @@ static ssize_t store_lpwg_failreason(struct device *dev, const char *buf, size_t
 	}
 
 	d->lpwg_failreason_ctrl = (u8)value;
-	TOUCH_I("Set Lpwg Failreason Ctrl = %s\n", value ? "Enable" : "Disable");
+	TOUCH_I("Set Lpwg Failreason Ctrl = %s\n",
+		value ? "Enable" : "Disable");
 
 	return count;
 }
@@ -4232,8 +4306,7 @@ static ssize_t show_lpwg_abs(struct device *dev, char *buf)
 	return ret;
 }
 
-static ssize_t store_lpwg_abs(struct device *dev,
-		const char *buf, size_t count)
+static ssize_t store_lpwg_abs(struct device *dev, const char *buf, size_t count)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
@@ -4249,12 +4322,11 @@ static ssize_t store_lpwg_abs(struct device *dev,
 	TOUCH_TRACE();
 
 	if (sscanf(buf, "%d %d %d %d %d %d", &enable, &offset_y, &start_x,
-				&start_y, &width, &height) <= 0)
+		   &start_y, &width, &height) <= 0)
 		return count;
 
 	TOUCH_I("%s: enable = %d, offset_y = %d, start_x = %d, start_y = %d, width = %d, height = %d\n",
-			__func__, enable,
-			offset_y, start_x, start_y, width, height);
+		__func__, enable, offset_y, start_x, start_y, width, height);
 
 	if ((enable > 1) || (enable < 0)) {
 		TOUCH_E("invalid enable(%d)\n", enable);
@@ -4293,19 +4365,15 @@ static ssize_t show_ai_pick(struct device *dev, char *buf)
 
 	TOUCH_TRACE();
 
-	ret += snprintf(buf + ret, PAGE_SIZE, "%d\n",
-			d->ai_pick.enable);
-	TOUCH_I("%s: ai_pick.enable = %d\n",
-			__func__, d->ai_pick.enable);
+	ret += snprintf(buf + ret, PAGE_SIZE, "%d\n", d->ai_pick.enable);
+	TOUCH_I("%s: ai_pick.enable = %d\n", __func__, d->ai_pick.enable);
 
 	sw42000_print_ai_pick_info(dev);
 
 	return ret;
 }
 
-
-static ssize_t store_ai_pick(struct device *dev,
-		const char *buf, size_t count)
+static ssize_t store_ai_pick(struct device *dev, const char *buf, size_t count)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
@@ -4321,12 +4389,11 @@ static ssize_t store_ai_pick(struct device *dev,
 	TOUCH_TRACE();
 
 	if (sscanf(buf, "%d %d %d %d %d %d", &enable, &offset_y, &start_x,
-				&start_y, &width, &height) <= 0)
+		   &start_y, &width, &height) <= 0)
 		return count;
 
 	TOUCH_I("%s: enable = %d, offset_y = %d, start_x = %d, start_y = %d, width = %d, height = %d\n",
-			__func__, enable,
-			offset_y, start_x, start_y, width, height);
+		__func__, enable, offset_y, start_x, start_y, width, height);
 
 	if ((enable > 1) || (enable < 0)) {
 		TOUCH_E("invalid enable(%d)\n", enable);
@@ -4342,23 +4409,23 @@ static ssize_t store_ai_pick(struct device *dev,
 		d->ai_pick.area.x2 = end_x;
 		d->ai_pick.area.y2 = end_y;
 
-		d->ai_pick.total_area.x1 = d->ai_pick.area.x1
-			- d->ai_pick.border_area.x1;
+		d->ai_pick.total_area.x1 =
+			d->ai_pick.area.x1 - d->ai_pick.border_area.x1;
 		if (d->ai_pick.total_area.x1 < 0)
 			d->ai_pick.total_area.x1 = 0;
 
-		d->ai_pick.total_area.y1 = d->ai_pick.area.y1
-			- d->ai_pick.border_area.y1;
+		d->ai_pick.total_area.y1 =
+			d->ai_pick.area.y1 - d->ai_pick.border_area.y1;
 		if (d->ai_pick.total_area.y1 < 0)
 			d->ai_pick.total_area.y1 = 0;
 
-		d->ai_pick.total_area.x2 = d->ai_pick.area.x2
-			+ d->ai_pick.border_area.x2;
+		d->ai_pick.total_area.x2 =
+			d->ai_pick.area.x2 + d->ai_pick.border_area.x2;
 		if (d->ai_pick.total_area.x2 > ts->caps.max_x)
 			d->ai_pick.total_area.x2 = ts->caps.max_x;
 
-		d->ai_pick.total_area.y2 = d->ai_pick.area.y2
-			+ d->ai_pick.border_area.y2;
+		d->ai_pick.total_area.y2 =
+			d->ai_pick.area.y2 + d->ai_pick.border_area.y2;
 		if (d->ai_pick.total_area.y2 > ts->caps.max_y)
 			d->ai_pick.total_area.y2 = ts->caps.max_y;
 	}
@@ -4372,7 +4439,7 @@ static ssize_t store_ai_pick(struct device *dev,
 	return count;
 }
 static ssize_t store_reset_ctrl(struct device *dev, const char *buf,
-		size_t count)
+				size_t count)
 {
 	int value = 0;
 
@@ -4385,7 +4452,7 @@ static ssize_t store_reset_ctrl(struct device *dev, const char *buf,
 }
 
 static ssize_t store_power_ctrl(struct device *dev, const char *buf,
-		size_t count)
+				size_t count)
 {
 	int value = 0;
 
@@ -4415,13 +4482,14 @@ static ssize_t show_grip_suppression(struct device *dev, char *buf)
 
 	ret = snprintf(buf, PAGE_SIZE, "%d\n", data & GRAB_TOUCH_CTRL_BIT);
 	TOUCH_I("%s : grip_status[%d], grip_noti[%d]\n", __func__,
-			data & GRAB_TOUCH_CTRL_BIT,
-			(data & GRAB_NOTI_CTRL_BIT) > 0 ? 1 : 0);
+		data & GRAB_TOUCH_CTRL_BIT,
+		(data & GRAB_NOTI_CTRL_BIT) > 0 ? 1 : 0);
 
 	return ret;
 }
 
-static ssize_t store_grip_suppression(struct device *dev, const char *buf, size_t count)
+static ssize_t store_grip_suppression(struct device *dev, const char *buf,
+				      size_t count)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	int ret = 0;
@@ -4454,8 +4522,8 @@ static ssize_t store_grip_suppression(struct device *dev, const char *buf, size_
 	}
 
 	TOUCH_I("%s : grip_status[%d], grip_noti[%d]\n", __func__,
-			data & GRAB_TOUCH_CTRL_BIT,
-			(data & GRAB_NOTI_CTRL_BIT) > 0 ? 1 : 0);
+		data & GRAB_TOUCH_CTRL_BIT,
+		(data & GRAB_NOTI_CTRL_BIT) > 0 ? 1 : 0);
 out:
 	mutex_unlock(&ts->lock);
 
@@ -4463,7 +4531,7 @@ out:
 }
 
 static ssize_t store_q_sensitivity(struct device *dev, const char *buf,
-		size_t count)
+				   size_t count)
 {
 	struct touch_core_data *ts = to_touch_core(dev);
 	struct sw42000_data *d = to_sw42000_data(dev);
@@ -4474,16 +4542,16 @@ static ssize_t store_q_sensitivity(struct device *dev, const char *buf,
 
 	mutex_lock(&ts->lock);
 
-	TOUCH_D(QUICKCOVER, "%s: change sensitivity %d -> %d\n",
-			__func__, d->q_sensitivity, (value));
+	TOUCH_D(QUICKCOVER, "%s: change sensitivity %d -> %d\n", __func__,
+		d->q_sensitivity, (value));
 	d->q_sensitivity = (value); /* 1=enable touch, 0=disable touch */
 
 	if (!(atomic_read(&ts->state.sleep) != IC_DEEP_SLEEP))
 		goto out;
 
 	TOUCH_I("%s : %s(%d)\n", __func__,
-			(d->q_sensitivity) ? "SENSITIVE" : "NORMAL",
-			(d->q_sensitivity));
+		(d->q_sensitivity) ? "SENSITIVE" : "NORMAL",
+		(d->q_sensitivity));
 
 	sw42000_setup_q_sensitivity(dev, value);
 out:
@@ -4504,10 +4572,9 @@ static ssize_t show_gpio_pin(struct device *dev, char *buf)
 	int_pin = gpio_get_value(ts->int_pin);
 
 	ret += snprintf(buf + ret, PAGE_SIZE - ret,
-			"reset_pin = %d , int_pin = %d\n",
-			reset_pin, int_pin);
-	TOUCH_I("%s: reset_pin = %d , int_pin = %d\n",
-			__func__, reset_pin, int_pin);
+			"reset_pin = %d , int_pin = %d\n", reset_pin, int_pin);
+	TOUCH_I("%s: reset_pin = %d , int_pin = %d\n", __func__, reset_pin,
+		int_pin);
 
 	return ret;
 }
@@ -4517,7 +4584,8 @@ static TOUCH_ATTR(reg_ctrl, NULL, store_reg_ctrl);
 static TOUCH_ATTR(lpwg_failreason, show_lpwg_failreason, store_lpwg_failreason);
 static TOUCH_ATTR(reset_ctrl, NULL, store_reset_ctrl);
 static TOUCH_ATTR(power_ctrl, NULL, store_power_ctrl);
-static TOUCH_ATTR(grip_suppression, show_grip_suppression, store_grip_suppression);
+static TOUCH_ATTR(grip_suppression, show_grip_suppression,
+		  store_grip_suppression);
 static TOUCH_ATTR(q_sensitivity, NULL, store_q_sensitivity);
 static TOUCH_ATTR(ai_pick, show_ai_pick, store_ai_pick);
 static TOUCH_ATTR(ts_noise_log_enable, show_noise_log, store_noise_log);
@@ -4564,8 +4632,6 @@ static int sw42000_register_sysfs(struct device *dev)
 		goto error;
 	}
 
-
-
 	return 0;
 
 error:
@@ -4584,22 +4650,29 @@ static int sw42000_get_cmd_version(struct device *dev, char *buf)
 	if (ret < 0) {
 		offset += snprintf(buf + offset, PAGE_SIZE, "-1\n");
 		offset += snprintf(buf + offset, PAGE_SIZE - offset,
-				"Read Fail Touch IC Info\n");
+				   "Read Fail Touch IC Info\n");
 		return offset;
 	}
-	offset = snprintf(buf + offset, PAGE_SIZE - offset, "version : v%d.%02d\n",
-			d->ic_info.version.major, d->ic_info.version.minor);
+	offset = snprintf(buf + offset, PAGE_SIZE - offset,
+			  "version : v%d.%02d\n", d->ic_info.version.major,
+			  d->ic_info.version.minor);
 
-	offset += snprintf(buf + offset, PAGE_SIZE - offset,
+	offset += snprintf(
+		buf + offset, PAGE_SIZE - offset,
 		"chip_rev : %d, channel : %d, sensor_ver : %d, fpc_ver : %d\n",
-			d->ic_info.pt_info.chip_rev, d->ic_info.pt_info.channel, d->ic_info.pt_info.sensor_ver, d->ic_info.pt_info.fpc_ver);
+		d->ic_info.pt_info.chip_rev, d->ic_info.pt_info.channel,
+		d->ic_info.pt_info.sensor_ver, d->ic_info.pt_info.fpc_ver);
 	offset += snprintf(buf + offset, PAGE_SIZE - offset,
-			"product id : [%s]\n", d->ic_info.product_id);
+			   "product id : [%s]\n", d->ic_info.product_id);
 
 	offset += snprintf(buf + offset, PAGE_SIZE - offset,
-			"date: 20%02d.%02d.%02d, time: %02d:%02d:%02d\n",
-			d->ic_info.pt_info.pt_date_year, d->ic_info.pt_info.pt_date_month, d->ic_info.pt_info.pt_date_day,
-			d->ic_info.pt_info.pt_time_hour, d->ic_info.pt_info.pt_time_min, d->ic_info.pt_info.pt_time_sec);
+			   "date: 20%02d.%02d.%02d, time: %02d:%02d:%02d\n",
+			   d->ic_info.pt_info.pt_date_year,
+			   d->ic_info.pt_info.pt_date_month,
+			   d->ic_info.pt_info.pt_date_day,
+			   d->ic_info.pt_info.pt_time_hour,
+			   d->ic_info.pt_info.pt_time_min,
+			   d->ic_info.pt_info.pt_time_sec);
 
 	return offset;
 }
@@ -4614,11 +4687,12 @@ static int sw42000_get_cmd_atcmd_version(struct device *dev, char *buf)
 	if (ret < 0) {
 		offset += snprintf(buf + offset, PAGE_SIZE, "-1\n");
 		offset += snprintf(buf + offset, PAGE_SIZE - offset,
-				"Read Fail Touch IC Info\n");
+				   "Read Fail Touch IC Info\n");
 		return offset;
 	}
 
-	offset = snprintf(buf, PAGE_SIZE, "v%d.%02d\n", d->ic_info.version.major, d->ic_info.version.minor);
+	offset = snprintf(buf, PAGE_SIZE, "v%d.%02d\n",
+			  d->ic_info.version.major, d->ic_info.version.minor);
 
 	return offset;
 }
@@ -4672,10 +4746,12 @@ static struct touch_driver touch_driver = {
 	.get = sw42000_get,
 };
 
-#define MATCH_NAME			"lge,sw42000"
+#define MATCH_NAME "lge,sw42000"
 
 static const struct of_device_id touch_match_ids[] = {
-	{ .compatible = MATCH_NAME, },
+	{
+		.compatible = MATCH_NAME,
+	},
 	{},
 };
 
@@ -4696,7 +4772,7 @@ static int __init touch_device_init(void)
 {
 	TOUCH_TRACE();
 
-	if(!panel_type_touch("oled")) {
+	if (!panel_type_touch("oled")) {
 		TOUCH_I("oled_type_touch not found\n");
 		return 0;
 	}
@@ -4742,4 +4818,3 @@ MODULE_AUTHOR("hoyeon.jang@lge.com");
 MODULE_DESCRIPTION("LGE touch driver v5");
 MODULE_LICENSE("GPL");
 #endif
-
