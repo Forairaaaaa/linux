@@ -2261,6 +2261,8 @@ Params: abx80x                  Select one of the ABx80x family:
 
         m41t62                  Select the M41T62 device
 
+        m41t80                  Select the M41T80 device
+
         mcp7940x                Select the MCP7940x device
 
         mcp7941x                Select the MCP7941x device
@@ -2343,6 +2345,8 @@ Params: abx80x                  Select one of the ABx80x family:
         ds3231                  Select the DS3231 device
 
         m41t62                  Select the M41T62 device
+
+        m41t80                  Select the M41T80 device
 
         mcp7940x                Select the MCP7940x device
 
@@ -4052,6 +4056,14 @@ Params: speed                   Display SPI bus speed
         touch-invy              Touchscreen inverted y axis
 
         touch-swapxy            Touchscreen swapped x y axis
+
+
+Name:   pivision
+Info:   Overlay to enable the SECO Pi Vision 10.1 HMI hardware for Compute
+        Module 5. Will be loaded automatically by up-to-date firmware via
+        EEPROM detection.
+Load:   dtoverlay=pivision
+Params: <None>
 
 
 Name:   pps-gpio
