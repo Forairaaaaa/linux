@@ -210,8 +210,9 @@ struct touch_bus_info {
 	struct touch_driver *touch_driver;
 };
 
-static int touch_i2c_probe(struct i2c_client *i2c,
-		const struct i2c_device_id *id)
+// static int touch_i2c_probe(struct i2c_client *i2c,
+// 		const struct i2c_device_id *id)
+static int touch_i2c_probe(struct i2c_client *i2c)
 {
 	struct touch_bus_info *info =
 		container_of(to_i2c_driver(i2c->dev.driver),
@@ -284,10 +285,11 @@ static int touch_i2c_probe(struct i2c_client *i2c,
 	return 0;
 }
 
-static int touch_i2c_remove(struct i2c_client *i2c)
+// static int touch_i2c_remove(struct i2c_client *i2c)
+void touch_i2c_remove(struct i2c_client *i2c)
 {
 	TOUCH_TRACE();
-	return 0;
+	// return 0;
 }
 
 static int touch_i2c_pm_suspend(struct device *dev)

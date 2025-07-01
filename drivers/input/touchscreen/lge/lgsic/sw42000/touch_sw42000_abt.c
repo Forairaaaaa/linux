@@ -45,40 +45,43 @@ int abt_socket_report_mode;
 
 static int abt_ksocket_receive(unsigned char *buf, int len)
 {
-	struct msghdr msg = {0, };
-	struct iovec iov = {0, };
-	struct socket *sock;
-	struct sockaddr_in *addr;
-	mm_segment_t oldfs;
-	unsigned int flag = 0;
-	int iov_count = 1;
-	int size = 0;
+	// struct msghdr msg = {0, };
+	// struct iovec iov = {0, };
+	// struct socket *sock;
+	// struct sockaddr_in *addr;
+	// mm_segment_t oldfs;
+	// unsigned int flag = 0;
+	// int iov_count = 1;
+	// int size = 0;
 
-	sock = abt_comm.ts_sock;
-	addr = &abt_comm.ts_addr;
+	// sock = abt_comm.ts_sock;
+	// addr = &abt_comm.ts_addr;
 
-	iov.iov_base = buf;
-	iov.iov_len = len;
+	// iov.iov_base = buf;
+	// iov.iov_len = len;
 
-	iov_iter_init(&msg.msg_iter, READ, &iov, iov_count, len);
-	msg.msg_name = addr;
-	msg.msg_namelen  = sizeof(struct sockaddr_in);
-	msg.msg_control = NULL;
-	msg.msg_controllen = 0;
-	msg.msg_flags = flag;
+	// iov_iter_init(&msg.msg_iter, READ, &iov, iov_count, len);
+	// msg.msg_name = addr;
+	// msg.msg_namelen  = sizeof(struct sockaddr_in);
+	// msg.msg_control = NULL;
+	// msg.msg_controllen = 0;
+	// msg.msg_flags = flag;
 
-	oldfs = get_fs();
-	set_fs(KERNEL_DS);
+	// oldfs = get_fs();
+	// set_fs(KERNEL_DS);
 
-	size = sock_recvmsg(sock, &msg, msg.msg_flags);
-	set_fs(oldfs);
+	// size = sock_recvmsg(sock, &msg, msg.msg_flags);
+	// set_fs(oldfs);
 
-	if (size > 0)
-		abt_comm.sock_listener(buf, size);
-	else
-		TOUCH_I(": sock_recvmsg size invalid %d\n", size);
+	// if (size > 0)
+	// 	abt_comm.sock_listener(buf, size);
+	// else
+	// 	TOUCH_I(": sock_recvmsg size invalid %d\n", size);
 
-	return size;
+	// return size;
+
+	printk(KERN_WARNING "lge_touch: abt_ksocket_receive not implemented\n");
+	return 0;
 }
 
 static void abt_ksocket_start_for_pctool(struct device *dev)
@@ -163,34 +166,37 @@ static int abt_ksocket_send(struct socket *sock,
 			struct sockaddr_in *addr,
 			unsigned char *buf, int len)
 {
-	struct msghdr msg = {0, };
-	struct iovec iov = {0, };
-	mm_segment_t oldfs;
-	unsigned int flag = 0;
-	int iov_count = 1;
-	int size = 0;
+	// struct msghdr msg = {0, };
+	// struct iovec iov = {0, };
+	// mm_segment_t oldfs;
+	// unsigned int flag = 0;
+	// int iov_count = 1;
+	// int size = 0;
 
-	if (sock == NULL)
-		return 0;
+	// if (sock == NULL)
+	// 	return 0;
 
-	iov.iov_base = buf;
-	iov.iov_len = len;
+	// iov.iov_base = buf;
+	// iov.iov_len = len;
 
-	iov_iter_init(&msg.msg_iter, WRITE, &iov, iov_count, len);
-	msg.msg_name = addr;
-	msg.msg_namelen  = sizeof(struct sockaddr_in);
-	msg.msg_control = NULL;
-	msg.msg_controllen = 0;
-	msg.msg_flags = flag;
+	// iov_iter_init(&msg.msg_iter, WRITE, &iov, iov_count, len);
+	// msg.msg_name = addr;
+	// msg.msg_namelen  = sizeof(struct sockaddr_in);
+	// msg.msg_control = NULL;
+	// msg.msg_controllen = 0;
+	// msg.msg_flags = flag;
 
-	oldfs = get_fs();
+	// oldfs = get_fs();
 
-	set_fs(KERNEL_DS);
-	size = sock_sendmsg(sock, &msg);
+	// set_fs(KERNEL_DS);
+	// size = sock_sendmsg(sock, &msg);
 
-	set_fs(oldfs);
+	// set_fs(oldfs);
 
-	return size;
+	// return size;
+
+	printk(KERN_WARNING "lge_touch: abt_ksocket_send not implemented\n");
+	return 0;
 }
 
 static uint32_t abt_ksocket_rcv_from_pctool(uint8_t *buf, uint32_t len)

@@ -22,7 +22,7 @@
 
 #define __SUPPORT_CLK_CTRL
 //#define __SUPPORT_NOTIFY_LCD_EVENT_REG
-#define __SUPPORT_ABT
+// #define __SUPPORT_ABT // Maybe
 //#define __SUPPORT_NOTIFY_CALL
 //#define __SUPPORT_LONGPRESS
 
@@ -737,7 +737,7 @@ struct sw42000_data {
 	u8 tci_debug_type;
 	atomic_t block_watch_cfg;
 	atomic_t init;
-	struct dev_pm_qos_request pm_qos_req;
+	struct pm_qos_request pm_qos_req;
 	u32 q_sensitivity;
 	char te_test_log[64];
 	int te_ret;

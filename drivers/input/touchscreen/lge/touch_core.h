@@ -727,8 +727,10 @@ struct touch_core_data {
 #endif
 };
 
-#define PROPERTY_GPIO(np, string, target)				\
-	(target = of_get_named_gpio_flags(np, string, 0, NULL))
+// #define PROPERTY_GPIO(np, string, target)				\
+// 	(target = of_get_named_gpio_flags(np, string, 0, NULL))
+#define PROPERTY_GPIO(np, string, target) \
+    (target = of_get_named_gpio(np, string, 0))
 
 #define PROPERTY_BOOL(np, string, target)				\
 	do {								\

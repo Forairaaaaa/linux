@@ -47,6 +47,9 @@ static void touch_resume(struct device *dev);
 static irqreturn_t secure_touch_filter_interrupt(struct touch_core_data *ts);
 #endif
 
+// Maybe
+#define BTN_LPWG KEY_WAKEUP
+
 void touch_report_cancel_event(struct touch_core_data *ts)
 {
 	u16 old_mask = ts->old_mask;
@@ -1577,7 +1580,8 @@ out:
 	return ret;
 }
 
-static int touch_core_remove(struct platform_device *pdev)
+// static int touch_core_remove(struct platform_device *pdev)
+static void touch_core_remove(struct platform_device *pdev)
 {
 	struct touch_core_data *ts;
 
@@ -1596,7 +1600,7 @@ static int touch_core_remove(struct platform_device *pdev)
 
 		plist->sub_dev[pdev->id - 1] = NULL;
 
-		return 0;
+		// return 0;
 	}
 	////////////////////////////////////////////////////////////////////
 
@@ -1633,7 +1637,7 @@ static int touch_core_remove(struct platform_device *pdev)
 
 	kfree(plist);
 
-	return 0;
+	// return 0;
 }
 
 static void touch_core_shutdown(struct platform_device *pdev)

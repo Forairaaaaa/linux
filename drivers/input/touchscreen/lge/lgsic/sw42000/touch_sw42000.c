@@ -4136,7 +4136,8 @@ int sw42000_irq_handler(struct device *dev)
 	}
 
 	ret = sw42000_check_status(dev);
-	pm_qos_update_request(&d->pm_qos_req, PM_QOS_DEFAULT_VALUE);
+	// pm_qos_update_request(&d->pm_qos_req, PM_QOS_DEFAULT_VALUE);
+	cpu_latency_qos_update_request(&d->pm_qos_req, PM_QOS_DEFAULT_VALUE);
 
 	d->intr_type = ((d->info.tc_status >> 16) & 0xF);
 	TOUCH_D(ABS, "%s : intr_type: %x\n", __func__, (int)d->intr_type);
@@ -4623,7 +4624,7 @@ static int sw42000_register_sysfs(struct device *dev)
 		goto error;
 	}
 
-	ret = sw42000_prd_register_sysfs(dev);
+	// ret = sw42000_prd_register_sysfs(dev);  // Maybe
 #if defined(__SUPPORT_ABT)
 	ret = sw42000_abt_register_sysfs(dev);
 #endif

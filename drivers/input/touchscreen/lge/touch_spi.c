@@ -158,7 +158,8 @@ static int touch_spi_probe(struct spi_device *spi)
 	ts->touch_ic_name = info->hwif->of_match_table->compatible;
 	dev_set_drvdata(&spi->dev, ts);
 
-	spi->chip_select = 0;
+	// spi->chip_select = 0;
+	spi->chip_select[0] = 0;
 	spi->bits_per_word = info->hwif->bits_per_word;
 	spi->mode = info->hwif->spi_mode;
 	spi->max_speed_hz = info->hwif->max_freq;
@@ -198,10 +199,11 @@ static int touch_spi_probe(struct spi_device *spi)
 	return 0;
 }
 
-static int touch_spi_remove(struct spi_device *spi)
+// static int touch_spi_remove(struct spi_device *spi)
+void touch_spi_remove(struct spi_device *spi)
 {
 	TOUCH_TRACE();
-	return 0;
+	// return 0;
 }
 
 static int touch_spi_pm_suspend(struct device *dev)

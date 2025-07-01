@@ -22,6 +22,7 @@
 #include <linux/workqueue.h>
 #include <linux/interrupt.h>
 #include <linux/firmware.h>
+#include <linux/string.h>
 
 #include <touch_core.h>
 #include <touch_hwif.h>
@@ -67,6 +68,24 @@ static const char * const test_name_str[TEST_TOTAL_NUM] = {
 	"U3_M2_JITTER_SELF_TEST",
 	"U0_M1_RAW_SELF_TEST",
 };
+
+size_t my_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t len;
+
+	for (len = 0; len < size; len++) {
+		dst[len] = src[len];
+		if (!dst[len])
+			return len;
+	}
+	if (size)
+		dst[size-1] = '\0';
+
+	while (src[len])
+		len++;
+
+	return len;
+}
 
 static int prd_compare_rawdata(struct device *dev, u8 type, int *result);
 
@@ -129,174 +148,179 @@ static void prd_param_set(struct device *dev)
 
 static void log_file_size_check(struct device *dev)
 {
-	char *fname = NULL;
-	struct file *file = NULL;
-	loff_t file_size = 0;
-	int i = 0;
-	char buf1[128] = {0};
-	char buf2[128] = {0};
-	mm_segment_t old_fs = get_fs();
-	int ret = 0;
-	int boot_mode = TOUCH_NORMAL_BOOT;
+// 	char *fname = NULL;
+// 	struct file *file = NULL;
+// 	loff_t file_size = 0;
+// 	int i = 0;
+// 	char buf1[128] = {0};
+// 	char buf2[128] = {0};
+// 	// mm_segment_t old_fs = get_fs();
+// 	int ret = 0;
+// 	int boot_mode = TOUCH_NORMAL_BOOT;
 
-	set_fs(KERNEL_DS);
+// 	// set_fs(KERNEL_DS);
 
-	boot_mode = touch_check_boot_mode(dev);
+// 	boot_mode = touch_check_boot_mode(dev);
 
-	switch (boot_mode) {
-	case TOUCH_NORMAL_BOOT:
-		fname = "/data/vendor/touch/touch_self_test.txt";
-		break;
-	case TOUCH_MINIOS_AAT:
-		fname = "/data/touch/touch_self_test.txt";
-		break;
-	case TOUCH_MINIOS_MFTS_FOLDER:
-	case TOUCH_MINIOS_MFTS_FLAT:
-	case TOUCH_MINIOS_MFTS_CURVED:
-		fname = "/data/touch/touch_self_mfts.txt";
-		break;
-	default:
-		TOUCH_I("%s : not support mode\n", __func__);
-		break;
-	}
+// 	switch (boot_mode) {
+// 	case TOUCH_NORMAL_BOOT:
+// 		fname = "/data/vendor/touch/touch_self_test.txt";
+// 		break;
+// 	case TOUCH_MINIOS_AAT:
+// 		fname = "/data/touch/touch_self_test.txt";
+// 		break;
+// 	case TOUCH_MINIOS_MFTS_FOLDER:
+// 	case TOUCH_MINIOS_MFTS_FLAT:
+// 	case TOUCH_MINIOS_MFTS_CURVED:
+// 		fname = "/data/touch/touch_self_mfts.txt";
+// 		break;
+// 	default:
+// 		TOUCH_I("%s : not support mode\n", __func__);
+// 		break;
+// 	}
 
-	if (fname) {
-		file = filp_open(fname, O_RDONLY, 0666);
-		ksys_chmod(fname, 0666);
-	} else {
-		TOUCH_E("%s : fname is NULL, can not open FILE\n", __func__);
-		goto error;
-	}
+// 	if (fname) {
+// 		file = filp_open(fname, O_RDONLY, 0666);
+// 		ksys_chmod(fname, 0666);
+// 	} else {
+// 		TOUCH_E("%s : fname is NULL, can not open FILE\n", __func__);
+// 		goto error;
+// 	}
 
-	if (IS_ERR(file)) {
-		TOUCH_I("%s : ERR(%ld) Open file error [%s]\n", __func__, PTR_ERR(file), fname);
-		goto error;
-	}
+// 	if (IS_ERR(file)) {
+// 		TOUCH_I("%s : ERR(%ld) Open file error [%s]\n", __func__, PTR_ERR(file), fname);
+// 		goto error;
+// 	}
 
-	file_size = vfs_llseek(file, 0, SEEK_END);
-	TOUCH_I("%s : [%s] file_size = %lld\n", __func__, fname, file_size);
+// 	file_size = vfs_llseek(file, 0, SEEK_END);
+// 	TOUCH_I("%s : [%s] file_size = %lld\n", __func__, fname, file_size);
 
-	filp_close(file, 0);
+// 	filp_close(file, 0);
 
-	if (file_size > MAX_LOG_FILE_SIZE) {
-		TOUCH_I("%s : [%s] file_size(%lld) > MAX_LOG_FILE_SIZE(%d)\n", __func__, fname, file_size, MAX_LOG_FILE_SIZE);
+// 	if (file_size > MAX_LOG_FILE_SIZE) {
+// 		TOUCH_I("%s : [%s] file_size(%lld) > MAX_LOG_FILE_SIZE(%d)\n", __func__, fname, file_size, MAX_LOG_FILE_SIZE);
 
-		for (i = MAX_LOG_FILE_COUNT - 1; i >= 0; i--) {
-			if (i == 0)
-				snprintf(buf1, sizeof(buf1), "%s", fname);
-			else
-				snprintf(buf1, sizeof(buf1), "%s.%d", fname, i);
+// 		for (i = MAX_LOG_FILE_COUNT - 1; i >= 0; i--) {
+// 			if (i == 0)
+// 				snprintf(buf1, sizeof(buf1), "%s", fname);
+// 			else
+// 				snprintf(buf1, sizeof(buf1), "%s.%d", fname, i);
 
-			ret = ksys_access(buf1, 0);
+// 			ret = ksys_access(buf1, 0);
 
-			if (ret == 0) {
-				TOUCH_I("%s : file [%s] exist\n", __func__, buf1);
+// 			if (ret == 0) {
+// 				TOUCH_I("%s : file [%s] exist\n", __func__, buf1);
 
-				if (i == (MAX_LOG_FILE_COUNT - 1)) {
-					if (ksys_unlink(buf1) < 0) {
-						TOUCH_E("%s : failed to remove file [%s]\n", __func__, buf1);
-						goto error;
-					}
+// 				if (i == (MAX_LOG_FILE_COUNT - 1)) {
+// 					if (ksys_unlink(buf1) < 0) {
+// 						TOUCH_E("%s : failed to remove file [%s]\n", __func__, buf1);
+// 						goto error;
+// 					}
 
-					TOUCH_I("%s : remove file [%s]\n", __func__, buf1);
-				} else {
-					snprintf(buf2, sizeof(buf2), "%s.%d", fname, (i + 1));
-					if (ksys_link(buf1, buf2) < 0) {
-						TOUCH_E("%s : failed to link file [%s] -> [%s]\n", __func__, buf1, buf2);
-						goto error;
-					}
-					if (ksys_unlink(buf1) < 0) {
-						TOUCH_E("%s : failed to remove file [%s]\n", __func__, buf1);
-						goto error;
-					}
-					TOUCH_I("%s : rename file [%s] -> [%s]\n", __func__, buf1, buf2);
-				}
-			} else {
-				TOUCH_I("%s : file [%s] does not exist (ret = %d)\n", __func__, buf1, ret);
-			}
-		}
-    }
+// 					TOUCH_I("%s : remove file [%s]\n", __func__, buf1);
+// 				} else {
+// 					snprintf(buf2, sizeof(buf2), "%s.%d", fname, (i + 1));
+// 					if (ksys_link(buf1, buf2) < 0) {
+// 						TOUCH_E("%s : failed to link file [%s] -> [%s]\n", __func__, buf1, buf2);
+// 						goto error;
+// 					}
+// 					if (ksys_unlink(buf1) < 0) {
+// 						TOUCH_E("%s : failed to remove file [%s]\n", __func__, buf1);
+// 						goto error;
+// 					}
+// 					TOUCH_I("%s : rename file [%s] -> [%s]\n", __func__, buf1, buf2);
+// 				}
+// 			} else {
+// 				TOUCH_I("%s : file [%s] does not exist (ret = %d)\n", __func__, buf1, ret);
+// 			}
+// 		}
+//     }
 
-error:
-	set_fs(old_fs);
+// error:
+// 	// set_fs(old_fs);
+// 	return;
+
+	printk(KERN_WARNING "lge_touch: log_file_size_check not implemented\n");
 }
 
 static void write_file(struct device *dev, char *data, int write_time)
 {
-	int fd = 0;
-	char *pname = NULL;
-	char *fname = NULL;
-	char time_string[TIME_STR_LEN] = {0};
-	struct timespec my_time = {0, };
-	struct tm my_date = {0, };
-	int boot_mode = TOUCH_NORMAL_BOOT;
-	mm_segment_t old_fs = get_fs();
+	// int fd = 0;
+	// char *pname = NULL;
+	// char *fname = NULL;
+	// char time_string[TIME_STR_LEN] = {0};
+	// struct timespec my_time = {0, };
+	// struct tm my_date = {0, };
+	// int boot_mode = TOUCH_NORMAL_BOOT;
+	// // mm_segment_t old_fs = get_fs();
 
-	set_fs(KERNEL_DS);
+	// // set_fs(KERNEL_DS);
 
-	boot_mode = touch_check_boot_mode(dev);
+	// boot_mode = touch_check_boot_mode(dev);
 
-	switch (boot_mode) {
-	case TOUCH_NORMAL_BOOT:
-		pname = "/data/vendor/touch";
-		fname = "/data/vendor/touch/touch_self_test.txt";
-		break;
-	case TOUCH_MINIOS_AAT:
-		pname = "/data/touch";
-		fname = "/data/touch/touch_self_test.txt";
-		break;
-	case TOUCH_MINIOS_MFTS_FOLDER:
-	case TOUCH_MINIOS_MFTS_FLAT:
-	case TOUCH_MINIOS_MFTS_CURVED:
-		pname = "/data/touch";
-		fname = "/data/touch/touch_self_mfts.txt";
-		break;
-	default:
-		TOUCH_I("%s : not support mode\n", __func__);
-		break;
-	}
+	// switch (boot_mode) {
+	// case TOUCH_NORMAL_BOOT:
+	// 	pname = "/data/vendor/touch";
+	// 	fname = "/data/vendor/touch/touch_self_test.txt";
+	// 	break;
+	// case TOUCH_MINIOS_AAT:
+	// 	pname = "/data/touch";
+	// 	fname = "/data/touch/touch_self_test.txt";
+	// 	break;
+	// case TOUCH_MINIOS_MFTS_FOLDER:
+	// case TOUCH_MINIOS_MFTS_FLAT:
+	// case TOUCH_MINIOS_MFTS_CURVED:
+	// 	pname = "/data/touch";
+	// 	fname = "/data/touch/touch_self_mfts.txt";
+	// 	break;
+	// default:
+	// 	TOUCH_I("%s : not support mode\n", __func__);
+	// 	break;
+	// }
 
-    if (pname) {
-        fd = ksys_access(pname, 0);
-    } else {
-        TOUCH_E("%s : pname is NULL, can not access the directory\n", __func__);
-        set_fs(old_fs);
-        return;
-    }
+    // if (pname) {
+    //     fd = ksys_access(pname, 0);
+    // } else {
+    //     TOUCH_E("%s : pname is NULL, can not access the directory\n", __func__);
+    //     // set_fs(old_fs);
+    //     return;
+    // }
 
-    if (fd < 0) {
-        ksys_mkdir(pname, 0770);
-        TOUCH_I("Make the directory, %s\n", pname);
-    }
+    // if (fd < 0) {
+    //     ksys_mkdir(pname, 0770);
+    //     TOUCH_I("Make the directory, %s\n", pname);
+    // }
 
-    if (fname) {
-        fd = ksys_open(fname, O_WRONLY|O_CREAT|O_APPEND, 0666);
-        ksys_chmod(fname, 0666);
-    } else {
-        TOUCH_E("%s : fname is NULL, can not open FILE\n", __func__);
-        set_fs(old_fs);
-        return;
-    }
+    // if (fname) {
+    //     fd = ksys_open(fname, O_WRONLY|O_CREAT|O_APPEND, 0666);
+    //     ksys_chmod(fname, 0666);
+    // } else {
+    //     TOUCH_E("%s : fname is NULL, can not open FILE\n", __func__);
+    //     // set_fs(old_fs);
+    //     return;
+    // }
 
-    if (fd >= 0) {
-		if (write_time == TIME_INFO_WRITE) {
-			my_time = current_kernel_time();
-			time_to_tm(my_time.tv_sec, sys_tz.tz_minuteswest * 60 * (-1), &my_date);
-			snprintf(time_string, TIME_STR_LEN,
-					"\n[%02d-%02d %02d:%02d:%02d.%03lu]\n",
-					my_date.tm_mon + 1,
-					my_date.tm_mday, my_date.tm_hour,
-					my_date.tm_min, my_date.tm_sec,
-					(unsigned long) my_time.tv_nsec / 1000000);
-			ksys_write(fd, time_string, strlen(time_string));
+    // if (fd >= 0) {
+	// 	if (write_time == TIME_INFO_WRITE) {
+	// 		my_time = current_kernel_time();
+	// 		time_to_tm(my_time.tv_sec, sys_tz.tz_minuteswest * 60 * (-1), &my_date);
+	// 		snprintf(time_string, TIME_STR_LEN,
+	// 				"\n[%02d-%02d %02d:%02d:%02d.%03lu]\n",
+	// 				my_date.tm_mon + 1,
+	// 				my_date.tm_mday, my_date.tm_hour,
+	// 				my_date.tm_min, my_date.tm_sec,
+	// 				(unsigned long) my_time.tv_nsec / 1000000);
+	// 		ksys_write(fd, time_string, strlen(time_string));
 
-		}
-		ksys_write(fd, data, strlen(data));
-		ksys_close(fd);
-	} else {
-		TOUCH_E("File open failed. ERROR(%d)\n", fd);
-	}
-	set_fs(old_fs);
+	// 	}
+	// 	ksys_write(fd, data, strlen(data));
+	// 	ksys_close(fd);
+	// } else {
+	// 	TOUCH_E("File open failed. ERROR(%d)\n", fd);
+	// }
+	// // set_fs(old_fs);
+
+	printk(KERN_WARNING "lge_touch: write_file not implemented\n");
 }
 
 static int write_test_mode(struct device *dev, u32 type)
@@ -614,54 +638,57 @@ static int __used prd_os_xline_result_read(struct device *dev, int type)
 
 static int sdcard_spec_file_read(struct device *dev)
 {
-	struct sw42000_data *d = to_sw42000_data(dev);
-	struct siw_hal_prd_data *prd = (struct siw_hal_prd_data *)d->prd;
-	struct prd_test_param *param = &prd->prd_param;
-	int ret = 0;
-	int fd = 0;
-	int size = 0;
-	char *path[2] = {param->spec_file_path, param->mfts_spec_file_path};
-	int boot_mode = TOUCH_NORMAL_BOOT;
-	int path_idx = 0;
-	mm_segment_t old_fs = get_fs();
+	// struct sw42000_data *d = to_sw42000_data(dev);
+	// struct siw_hal_prd_data *prd = (struct siw_hal_prd_data *)d->prd;
+	// struct prd_test_param *param = &prd->prd_param;
+	// int ret = 0;
+	// int fd = 0;
+	// int size = 0;
+	// char *path[2] = {param->spec_file_path, param->mfts_spec_file_path};
+	// int boot_mode = TOUCH_NORMAL_BOOT;
+	// int path_idx = 0;
+	// // mm_segment_t old_fs = get_fs();
 
-	boot_mode = touch_check_boot_mode(dev);
+	// boot_mode = touch_check_boot_mode(dev);
 
-	if ((boot_mode == TOUCH_MINIOS_MFTS_FOLDER)
-			|| (boot_mode == TOUCH_MINIOS_MFTS_FLAT)
-			|| (boot_mode == TOUCH_MINIOS_MFTS_CURVED))
-		path_idx = 1;
-	else
-		path_idx = 0;
-	set_fs(KERNEL_DS);
-	fd = ksys_open(path[path_idx], O_RDONLY, 0);
-	if (fd >= 0) {
-		size = ksys_lseek(fd, 0, SEEK_END);
+	// if ((boot_mode == TOUCH_MINIOS_MFTS_FOLDER)
+	// 		|| (boot_mode == TOUCH_MINIOS_MFTS_FLAT)
+	// 		|| (boot_mode == TOUCH_MINIOS_MFTS_CURVED))
+	// 	path_idx = 1;
+	// else
+	// 	path_idx = 0;
+	// // set_fs(KERNEL_DS);
+	// fd = ksys_open(path[path_idx], O_RDONLY, 0);
+	// if (fd >= 0) {
+	// 	size = ksys_lseek(fd, 0, SEEK_END);
 
-		if (line) {
-			TOUCH_I("%s: line is already allocated. kfree line\n",
-					__func__);
-			kfree(line);
-			line = NULL;
-		}
+	// 	if (line) {
+	// 		TOUCH_I("%s: line is already allocated. kfree line\n",
+	// 				__func__);
+	// 		kfree(line);
+	// 		line = NULL;
+	// 	}
 
-		line = kzalloc(size, GFP_KERNEL);
-		if (line == NULL) {
-			TOUCH_E("failed to kzalloc line\n");
-			ksys_close(fd);
-			set_fs(old_fs);
-			return -ENOMEM;
-		}
+	// 	line = kzalloc(size, GFP_KERNEL);
+	// 	if (line == NULL) {
+	// 		TOUCH_E("failed to kzalloc line\n");
+	// 		ksys_close(fd);
+	// 		// set_fs(old_fs);
+	// 		return -ENOMEM;
+	// 	}
 
-		ksys_lseek(fd, 0, SEEK_SET);
-		ksys_read(fd, line, sizeof(line));
-		ksys_close(fd);
-		TOUCH_I("%s file existing\n", path[path_idx]);
-		ret = 1;
-	}
-	set_fs(old_fs);
+	// 	ksys_lseek(fd, 0, SEEK_SET);
+	// 	ksys_read(fd, line, sizeof(line));
+	// 	ksys_close(fd);
+	// 	TOUCH_I("%s file existing\n", path[path_idx]);
+	// 	ret = 1;
+	// }
+	// // set_fs(old_fs);
 
-	return ret;
+	// return ret;
+
+	printk(KERN_WARNING "lge_touch: sdcard_spec_file_read not implemented\n");
+	return 0;
 }
 
 static int spec_file_read(struct device *dev)
@@ -715,7 +742,8 @@ static int spec_file_read(struct device *dev)
 		goto error;
 	}
 
-	strlcpy(line, fwlimit->data, fwlimit->size);
+	// strlcpy(line, fwlimit->data, fwlimit->size);
+	my_strlcpy(line, fwlimit->data, fwlimit->size);
 
 error:
 	if (fwlimit)
