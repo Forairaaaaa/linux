@@ -357,7 +357,7 @@ dtbo-$(CONFIG_ARCH_BCM2835) += \
 	wittypi.dtbo \
 	wm8960-soundcard.dtbo \
 	ws2812-pio.dtbo \
-	panel-lg-3p92.dtbo
+	panel-visionox-rm692c9.dtbo
 
 targets += dtbs dtbs_install
 targets += $(dtbo-y)

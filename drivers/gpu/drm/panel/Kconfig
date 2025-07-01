@@ -1031,10 +1031,10 @@ config DRM_PANEL_XINPENG_XPP055C272
 	  XPP055C272 controller for 720x1280 LCD panels with MIPI/RGB/SPI
 	  system interfaces.
 
-config DRM_PANEL_LG3P92
-	tristate "LG 3.92 AMOLED panel"
+config DRM_PANEL_VISIONOX_RM692C9
+	tristate "Visionox RM692C9 AMOLED DSI Panel Driver (LG Wing 3.92 1080x1240 G-OLED)"
 	depends on GPIOLIB && OF
 	depends on DRM_MIPI_DSI
 	help
-		Say Y here if you want to enable support for the LG 3.92 AMOLED panel.
+		Say Y here if you want to enable support for the Visionox RM692C9 AMOLED DSI Panel Driver (LG Wing 3.92 1080x1240 G-OLED).
 endmenu
