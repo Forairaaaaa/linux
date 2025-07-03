@@ -1,0 +1,23 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2c1>;
+
+		__overlay__ {
+			status = "okay";
+
+			#address-cells = <1>;
+	    	#size-cells = <0>;
+
+			max17040: battery@36 {
+				compatible = "maxim,max17040";
+				reg = <0x36>;
+				status = "okay";
+			};
+		};
+	};
+};

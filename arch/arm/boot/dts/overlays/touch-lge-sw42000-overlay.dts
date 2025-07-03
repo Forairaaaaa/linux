@@ -1,0 +1,54 @@
+// https://github.com/Cjiio/Linux-Kit-Core/blob/develop/build/boards/cv181x/sg2000_milkv_duos_musl_riscv64_emmc/dts_riscv/sg2000_milkv_duos_musl_riscv64_emmc.dts
+
+/dts-v1/;
+/plugin/;
+
+// #include <dt-bindings/gpio/gpio.h>
+// #include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2c1>;
+
+		__overlay__ {
+			status = "okay";
+
+			#address-cells = <1>;
+	    	#size-cells = <0>;
+
+			sw42000: sw42000@28 {
+				status = "okay";
+				compatible = "lge,sw42000";
+				reg = <0x28>;
+
+                // reset-gpios = <&gpio 23 GPIO_ACTIVE_LOW>; // TODO
+                // irq-gpios = <&gpio 22 GPIO_ACTIVE_LOW>; // TODO
+                // irqflags = <IRQ_TYPE_EDGE_FALLING>;
+                reset-gpios = <&gpio 27 1>; // TODO
+                irq-gpios = <&gpio 17 1>; // TODO
+                irqflags = <2>;
+
+                /* Caps */
+                max_x = <1080>;
+                max_y = <1240>;
+                max_pressure = <0xff>;
+                max_width_major = <1080>;
+                max_width_minor = <1240>;
+                max_orientation = <90>;
+                max_id = <10>;
+                hw_reset_delay = <40>;
+                sw_reset_delay = <40>;
+
+                    /* role */
+                use_lpwg = <1>;
+                use_lpwg_test = <1>;
+                hide_coordinate = <1>;
+                use_activepen_status = <0>;
+                use_film_status = <1>;
+                use_dex_mode = <1>;
+			};
+		};
+	};
+};

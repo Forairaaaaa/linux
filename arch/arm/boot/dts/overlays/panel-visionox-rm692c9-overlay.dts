@@ -43,20 +43,6 @@
 		};
 	};
 
-	fragment@2 {
-		target = <&i2c0if>;
-		__overlay__ {
-			status = "okay";
-		};
-	};
-
-	fragment@3 {
-		target = <&i2c0mux>;
-		__overlay__ {
-			status = "okay";
-		};
-	};
-
     __overrides__ {
         reset_pin = <&dsi_panel>, "reset-gpios:1";
     };

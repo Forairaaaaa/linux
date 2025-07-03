@@ -7,12 +7,15 @@
 #include <linux/backlight.h>
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
+#include <linux/module.h>
 #include <linux/of.h>
 #include <linux/regulator/consumer.h>
 
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
+
+#include <video/mipi_display.h>
 
 struct visionox_rm692c9_panel {
 	struct drm_panel panel;
@@ -129,21 +132,21 @@ static const struct drm_panel_funcs visionox_rm692c9_panel_funcs = {
 static int visionox_rm692c9_panel_bl_update_status(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
-	u16 brightness = backlight_get_brightness(bl);
+	u16 brightness = bl->props.brightness;
 
-	int ret;
-	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
-	if (ret < 0) {
-		return ret;
-	}
+	u8 payload[2] = {
+		brightness >> 8,
+		brightness & 0xff,
+	};
 
-	return 0;
+	return mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS, payload,
+				  sizeof(payload));
 }
 
 static int visionox_rm692c9_panel_bl_get_brightness(struct backlight_device *bl)
 {
 	struct mipi_dsi_device *dsi = bl_get_data(bl);
-	u16 brightness = bl->props.brightness;
+	u16 brightness;
 	int ret;
 
 	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
@@ -151,7 +154,7 @@ static int visionox_rm692c9_panel_bl_get_brightness(struct backlight_device *bl)
 		return ret;
 	}
 
-	return brightness & 0xff;
+	return brightness;
 }
 
 static const struct backlight_ops visionox_rm692c9_panel_bl_ops = {
@@ -165,8 +168,8 @@ visionox_rm692c9_panel_create_backlight(struct mipi_dsi_device *dsi)
 	struct device *dev = &dsi->dev;
 	const struct backlight_properties props = {
 		.type = BACKLIGHT_RAW,
-		.brightness = 255,
-		.max_brightness = 255,
+		.brightness = 2047,
+		.max_brightness = 2047,
 	};
 
 	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
@@ -200,16 +203,12 @@ static int visionox_rm692c9_panel_probe(struct mipi_dsi_device *dsi)
 				     "Couldn't get our reset GPIO\n");
 	}
 
-	// ret = of_drm_get_panel_orientation(dsi->dev.of_node, &ctx->orientation);
-	// if (ret) {
-	// 	dev_err(&dsi->dev, "%pOF: failed to get orientation: %d\n",
-	// 		dsi->dev.of_node, ret);
-	// 	return ret;
-	// }
-
-	// ret = drm_panel_of_backlight(&ctx->panel);
-	// if (ret)
-	// 	return ret;
+	ctx->panel.backlight = visionox_rm692c9_panel_create_backlight(dsi);
+	if (IS_ERR(ctx->panel.backlight)) {
+		ret = PTR_ERR(ctx->panel.backlight);
+		dev_err(&dsi->dev, "Failed to create backlight: %d\n", ret);
+		return ret;
+	}
 
 	drm_panel_add(&ctx->panel);
 
@@ -254,5 +253,5 @@ module_mipi_dsi_driver(visionox_rm692c9_panel_driver);
 
 MODULE_AUTHOR("Forairaaaaa");
 MODULE_DESCRIPTION(
-	"Visionox RM692C9 DSI AMOLED Panel Driver (LG Wing 3.92 1080x1240 G-OLED)");
+	"Visionox RM692C9 DSI Panel Driver (LG Wing 3.92 1080x1240 G-OLED)");
 MODULE_LICENSE("GPL");

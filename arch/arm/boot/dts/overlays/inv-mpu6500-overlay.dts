@@ -1,0 +1,23 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2c1>;
+
+		__overlay__ {
+			status = "okay";
+
+			#address-cells = <1>;
+	    	#size-cells = <0>;
+
+			mpu6500: mpu6500@68 {
+				compatible = "invensense,mpu6500";
+				reg = <0x68>;
+				status = "okay";
+			};
+		};
+	};
+};
