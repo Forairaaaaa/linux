@@ -1,0 +1,31 @@
+// Definitions for TI OPT3001 ambient light sensor
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+            opt3001: opt3001@44 {
+                compatible = "ti,opt3001";
+                reg = <0x44>;
+                #io-channel-cells = <1>;
+                interrupt-parent = <&gpio>;
+                interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+                status = "okay";
+            };
+		};
+	};
+
+	__overrides__ {
+		addr = <&opt3001>,"reg:0";
+		int_pin = <&opt3001>,"interrupts:0",
+			  <&opt3001>,"interrupt-parent:0";
+	};
+}; 
