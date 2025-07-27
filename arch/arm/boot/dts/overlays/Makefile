@@ -360,7 +360,9 @@ dtbo-$(CONFIG_ARCH_BCM2835) += \
 	panel-visionox-rm692c9.dtbo \
 	inv-mpu6500.dtbo \
 	max17040-battery.dtbo \
-	touch-lge-sw42000.dtbo
+	touch-lge-sw42000.dtbo \
+	opt3001.dtbo \
+	es8311.dtbo
 
 targets += dtbs dtbs_install
 targets += $(dtbo-y)
