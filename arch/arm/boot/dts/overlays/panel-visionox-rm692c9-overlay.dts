@@ -32,7 +32,7 @@
 			dsi_panel: dsi_panel@0 {
 				reg = <0>;
 				compatible = "visionox,rm692c9";
-				reset-gpios = <&gpio 22 1>;
+				reset-gpios = <&gpio 6 1>;
 
 				port {
 					panel_in: endpoint {
