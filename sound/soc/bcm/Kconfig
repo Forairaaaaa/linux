@@ -310,3 +310,9 @@ config SND_DACBERRY400
 	select SND_SOC_TLV320AIC3X_I2C
 	help
 	  Say Y or M if you want to add support for tlv320aic3x add-on
+
+config SND_REBECCA_AUDIO
+	tristate "Support for Rebecca Audio"
+	select SND_SOC_ES8311
+	help
+	  Say Y or M if you want to add support for Rebecca Audio.

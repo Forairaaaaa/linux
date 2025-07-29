@@ -46,36 +46,12 @@
 		};
 	};
 
-	fragment@3 {
+	fragment@4 {
 		target = <&sound>;
-		slave_overlay: __overlay__ {
-			compatible = "simple-audio-card";
-			simple-audio-card,format = "i2s";
-			simple-audio-card,name = "es8311-soundcard";
+		__overlay__ {
+			compatible = "rebecca,audio";
+			i2s-controller = <&i2s_clk_producer>;
 			status = "okay";
-
-			simple-audio-card,widgets =
-				"Microphone", "Internal Mic",
-				"Speaker", "Internal Speaker";
-			simple-audio-card,routing =
-				"Internal Speaker", "OUT",
-				"MIC1", "Internal Mic";
-
-			simple-audio-card,aux-devs = <&amp_enable_reg>;
-
-			simple-audio-card,cpu {
-				sound-dai = <&i2s_clk_producer>;
-			};
-
-			dailink0_slave: simple-audio-card,codec {
-				sound-dai = <&es8311>;
-			};
 		};
-	};
-
-	__overrides__ {
-		alsaname = <&slave_overlay>,"simple-audio-card,name";
-		compatible = <&es8311>,"compatible";
-		amp_gpio = <&amp_enable_reg>,"gpio:4";
 	};
 };

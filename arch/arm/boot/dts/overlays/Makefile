@@ -362,7 +362,7 @@ dtbo-$(CONFIG_ARCH_BCM2835) += \
 	max17040-battery.dtbo \
 	touch-lge-sw42000.dtbo \
 	opt3001.dtbo \
-	es8311.dtbo
+	rebecca-audio.dtbo
 
 targets += dtbs dtbs_install
 targets += $(dtbo-y)
