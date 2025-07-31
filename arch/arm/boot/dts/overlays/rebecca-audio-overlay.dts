@@ -51,6 +51,7 @@
 		__overlay__ {
 			compatible = "rebecca,audio";
 			i2s-controller = <&i2s_clk_producer>;
+			audio-codec = <&es8311>;
 			status = "okay";
 		};
 	};

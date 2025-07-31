@@ -27,4 +27,4 @@ add_dtoverlay inv-mpu6500
 add_dtoverlay max17040-battery
 add_dtoverlay touch-lge-sw42000
 add_dtoverlay opt3001
-add_dtoverlay es8311
+add_dtoverlay rebecca-audio

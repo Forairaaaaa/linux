@@ -25,10 +25,10 @@ static const struct snd_soc_dapm_widget rebecca_es8311_widgets[] = {
 
 static const struct snd_soc_dapm_route rebecca_es8311_audio_map[] = {
 	/* Speaker */
-	{"Speaker", NULL, "OUT"},
+	{ "Speaker", NULL, "OUT" },
 
 	/* Mic */
-	{"MIC1", NULL, "Mic"},
+	{ "MIC1", NULL, "Mic" },
 };
 
 static int snd_rpi_rebecca_es8311_init(struct snd_soc_pcm_runtime *rtd)
@@ -45,7 +45,8 @@ static int snd_rpi_rebecca_es8311_init(struct snd_soc_pcm_runtime *rtd)
 	 */
 	ret = snd_soc_dai_set_sysclk(codec_dai, 0, 0, 0);
 	if (ret && ret != -ENOTSUPP) {
-		dev_err(rtd->card->dev, "Failed to set codec sysclk: %d\n", ret);
+		dev_err(rtd->card->dev, "Failed to set codec sysclk: %d\n",
+			ret);
 		return ret;
 	}
 
@@ -53,7 +54,7 @@ static int snd_rpi_rebecca_es8311_init(struct snd_soc_pcm_runtime *rtd)
 }
 
 static int snd_rpi_rebecca_es8311_hw_params(struct snd_pcm_substream *substream,
-				       struct snd_pcm_hw_params *params)
+					    struct snd_pcm_hw_params *params)
 {
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
@@ -75,20 +76,20 @@ static const struct snd_soc_ops snd_rpi_rebecca_es8311_ops = {
 };
 
 SND_SOC_DAILINK_DEFS(rebecca_es8311,
-	DAILINK_COMP_ARRAY(COMP_CPU("bcm2835-i2s.0")),
-	DAILINK_COMP_ARRAY(COMP_CODEC("es8311.1-0018", "es8311-hifi")),
-	DAILINK_COMP_ARRAY(COMP_PLATFORM("bcm2835-i2s.0")));
+		     DAILINK_COMP_ARRAY(COMP_CPU("bcm2835-i2s.0")),
+		     DAILINK_COMP_ARRAY(COMP_CODEC(NULL, "es8311")),
+		     DAILINK_COMP_ARRAY(COMP_PLATFORM("bcm2835-i2s.0")));
 
 static struct snd_soc_dai_link snd_rpi_rebecca_es8311_dai[] = {
-{
-	.name = "ES8311",
-	.stream_name = "ES8311 HiFi",
-	.dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
-		   SND_SOC_DAIFMT_CBS_CFS,
-	.init = snd_rpi_rebecca_es8311_init,
-	.ops = &snd_rpi_rebecca_es8311_ops,
-	SND_SOC_DAILINK_REG(rebecca_es8311),
-},
+	{
+		.name = "ES8311",
+		.stream_name = "ES8311 Audio",
+		.dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+			   SND_SOC_DAIFMT_CBS_CFS,
+		.init = snd_rpi_rebecca_es8311_init,
+		.ops = &snd_rpi_rebecca_es8311_ops,
+		SND_SOC_DAILINK_REG(rebecca_es8311),
+	},
 };
 
 static struct snd_soc_card snd_rpi_rebecca_es8311 = {
@@ -103,17 +104,20 @@ static struct snd_soc_card snd_rpi_rebecca_es8311 = {
 
 static int snd_rpi_rebecca_es8311_probe(struct platform_device *pdev)
 {
+	dev_info(&pdev->dev, "snd_rpi_rebecca_es8311_probe\n");
+
 	int ret = 0;
 
 	snd_rpi_rebecca_es8311.dev = &pdev->dev;
 
 	if (pdev->dev.of_node) {
-		struct device_node *i2s_node;
+		struct device_node *i2s_node, *codec_node;
 		struct snd_soc_card *card = &snd_rpi_rebecca_es8311;
 		struct snd_soc_dai_link *dai = &snd_rpi_rebecca_es8311_dai[0];
 
-		i2s_node = of_parse_phandle(pdev->dev.of_node,
-						"i2s-controller", 0);
+		// 获取 I2S 控制器节点
+		i2s_node = of_parse_phandle(pdev->dev.of_node, "i2s-controller",
+					    0);
 		if (i2s_node) {
 			dai->cpus->dai_name = NULL;
 			dai->cpus->of_node = i2s_node;
@@ -122,8 +126,20 @@ static int snd_rpi_rebecca_es8311_probe(struct platform_device *pdev)
 			of_node_put(i2s_node);
 		}
 
+		// 获取 codec 节点
+		codec_node =
+			of_parse_phandle(pdev->dev.of_node, "audio-codec", 0);
+		if (codec_node) {
+			dai->codecs->of_node = codec_node;
+			dai->codecs->dai_name =
+				"es8311"; // 要与 codec 驱动中 .name 一致
+			dai->codecs->name = NULL;
+			of_node_put(codec_node);
+		}
+
+		// 获取声卡名字（可选）
 		if (of_property_read_string(pdev->dev.of_node, "card-name",
-						&card->name))
+					    &card->name))
 			card->name = "rebecca-es8311";
 	}
 
@@ -144,7 +160,9 @@ static void snd_rpi_rebecca_es8311_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id rebecca_es8311_match_id[] = {
-	{ .compatible = "rebecca,audio", },
+	{
+		.compatible = "rebecca,audio",
+	},
 	{},
 };
 MODULE_DEVICE_TABLE(of, rebecca_es8311_match_id);
@@ -166,4 +184,3 @@ MODULE_DESCRIPTION("ES8311 sound card driver for Rebecca board");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:rebecca-es8311");
 MODULE_SOFTDEP("pre: snd-soc-es8311");
- 
