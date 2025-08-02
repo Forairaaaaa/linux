@@ -13,17 +13,17 @@
 
 		__overlay__ {
 			status = "okay";
-			
+
 			#address-cells = <1>;
 			#size-cells = <0>;
 
             opt3001: opt3001@44 {
                 compatible = "ti,opt3001";
                 reg = <0x44>;
-                #io-channel-cells = <1>;
-                interrupt-parent = <&gpio>;
-                interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
-                status = "okay";
+				status = "okay";
+
+                // interrupt-parent = <&rp1_gpio>;
+                // interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
             };
 		};
 	};
@@ -33,4 +33,4 @@
 		int_pin = <&opt3001>,"interrupts:0",
 			  <&opt3001>,"interrupt-parent:0";
 	};
-}; 
+}; 	

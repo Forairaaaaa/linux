@@ -782,6 +782,7 @@ static int opt3001_probe(struct i2c_client *client)
 	}
 
 	/* Make use of INT pin only if valid IRQ no. is given */
+	dev_info(dev, "opt3001 probe: irq = %d\n", irq);
 	if (irq > 0) {
 		ret = request_threaded_irq(irq, NULL, opt3001_irq,
 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
