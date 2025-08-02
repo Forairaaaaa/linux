@@ -1,6 +1,13 @@
 echo install modules..
 sudo make -j6 modules_install
 
+echo manually install modules..
+sudo mkdir -p /lib/modules/$(uname -r)/extra
+sudo cp sound/soc/codecs/snd-soc-es8311.ko /lib/modules/$(uname -r)/extra/
+sudo cp sound/soc/bcm/snd-soc-rebecca-audio.ko /lib/modules/$(uname -r)/extra/
+sudo cp drivers/iio/light/opt3001.ko /lib/modules/$(uname -r)/extra/
+sudo depmod -a
+
 echo kernel and device tree blobs..
 sudo cp /boot/firmware/$KERNEL.img /boot/firmware/$KERNEL-backup.img
 sudo cp arch/arm64/boot/Image.gz /boot/firmware/$KERNEL.img
